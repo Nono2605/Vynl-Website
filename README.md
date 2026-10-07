@@ -10,7 +10,7 @@ le Creator Studio, et affiche le catalogue réel via l'API publique.
 | --- | --- |
 | `index.html` | Accueil : hero (disque), pourquoi Vynl, les 3 étiquettes, catalogue réel, créateurs |
 | `creators.html` | Creator Studio : fonctionnalités (Live / Coming), parcours, prérequis |
-| `transparency.html` | Étiquettes human / AI-assisted / AI-generated, royalties centrées sur l'utilisateur |
+| `transparency.html` | Étiquettes AI-assisted / AI-generated, royalties centrées sur l'utilisateur |
 
 ## Structure
 
