@@ -1352,6 +1352,18 @@ ol {
   margin-bottom: 0;
 }
 
+/* Voile sombre : l'opacité (--dim) est animée au défilement quand la carte suivante arrive */
+.stack__card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: var(--vynl-nuit);
+  opacity: var(--dim, 0);
+  pointer-events: none;
+}
+
 .stack__word {
   grid-column: 1 / -1;
   grid-row: 2;

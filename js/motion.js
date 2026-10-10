@@ -136,16 +136,18 @@
     });
 
     // Les cartes du studio rapetissent et s'assombrissent quand la suivante les recouvre
-    // (jamais d'opacité : on lirait les mots à travers la carte du dessus).
+    // (la carte reste opaque : on ne lit jamais les mots à travers celle du dessus).
     // La position où chaque carte se colle est lue dans le CSS : ordinateur et mobile
     // partagent la même animation.
     var cards = $$(".stack__card");
     cards.forEach(function (card, i) {
       var next = cards[i + 1];
       if (!next) return;
-      gsap.to(card, {
+      // Départ explicite : partir de "filter: none" faisait passer GSAP par un noir presque total.
+      // On assombrit avec un voile (::after, opacité pilotée par --dim) : pas de filtre à repeindre.
+      gsap.fromTo(card, { scale: 1, "--dim": 0 }, {
         scale: 0.93,
-        filter: "brightness(0.5)",
+        "--dim": 0.55,
         ease: "none",
         scrollTrigger: {
           trigger: next,
