@@ -1,6 +1,6 @@
 /**
- * Comportement du site vitrine — JavaScript natif, aucune dépendance.
- * Tout ce qui suit est une amélioration : sans JS, le site reste lisible.
+ * Comportement du site vitrine : JavaScript natif, aucune dépendance.
+ * Tout est une amélioration progressive : sans JS, le site reste lisible.
  */
 (function () {
   "use strict";
@@ -8,7 +8,7 @@
   var CFG = window.VYNL || { links: {}, apiBase: "" };
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* Liens vers les autres apps : data-link="signup" → CFG.links.signup */
+  /* Liens vers les autres apps : data-link="signup" donne CFG.links.signup */
   function applyLinks() {
     document.querySelectorAll("[data-link]").forEach(function (el) {
       var url = CFG.links[el.getAttribute("data-link")];
@@ -52,7 +52,7 @@
     });
   }
 
-  /* Disque : lecture / pause de l'animation (décoratif, aucun son) */
+  /* Disque : lecture et pause de l'animation (décoratif, aucun son) */
   function initRecord() {
     var record = document.querySelector("[data-record]");
     var button = document.querySelector("[data-record-toggle]");
@@ -63,8 +63,8 @@
       button.setAttribute("aria-pressed", playing ? "true" : "false");
     }
 
-    // Respect de prefers-reduced-motion : le disque démarre à l'arrêt,
-    // et c'est le visiteur qui décide de le lancer.
+    // Avec prefers-reduced-motion, le disque démarre à l'arrêt et c'est le
+    // visiteur qui décide de le lancer.
     setPlaying(!reducedMotion);
 
     button.addEventListener("click", function () {
@@ -72,10 +72,18 @@
     });
   }
 
-  /* Apparition au défilement */
+  /* Apparition au défilement : l'ordre dans le groupe fixe le décalage */
   function initReveal() {
     var items = document.querySelectorAll("[data-reveal]");
     if (!items.length) return;
+
+    var counts = new Map();
+    items.forEach(function (el) {
+      if (el.style.getPropertyValue("--i")) return;
+      var n = counts.get(el.parentElement) || 0;
+      el.style.setProperty("--i", String(n));
+      counts.set(el.parentElement, n + 1);
+    });
 
     if (reducedMotion || !("IntersectionObserver" in window)) {
       items.forEach(function (el) {
@@ -100,8 +108,27 @@
     });
   }
 
-  /* Catalogue réel : GET /tracks (public). La section reste masquée tant
-     que l'API n'a rien renvoyé — le site ne dépend jamais d'elle. */
+  /* Tuiles : la lumière suit le curseur (pointeurs précis uniquement).
+     Écrit seulement deux variables CSS, une fois par image. */
+  function initSpotlight() {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    document.querySelectorAll(".tile").forEach(function (tile) {
+      var frame = 0;
+      tile.addEventListener("pointermove", function (e) {
+        if (frame) return;
+        frame = requestAnimationFrame(function () {
+          var rect = tile.getBoundingClientRect();
+          tile.style.setProperty("--mx", e.clientX - rect.left + "px");
+          tile.style.setProperty("--my", e.clientY - rect.top + "px");
+          frame = 0;
+        });
+      });
+    });
+  }
+
+  /* Catalogue réel : GET /tracks (public). La section reste masquée tant que
+     l'API n'a rien renvoyé, le site ne dépend jamais d'elle. */
   function safeImageUrl(value) {
     try {
       var url = new URL(value);
@@ -151,11 +178,11 @@
     var list = section.querySelector("[data-catalog-list]");
     if (!list) return;
 
-    // L'API gratuite de Render peut mettre ~50 s à se réveiller.
+    // L'API gratuite de Render peut mettre une minute à se réveiller.
     var controller = "AbortController" in window ? new AbortController() : null;
     var timer = controller ? setTimeout(function () { controller.abort(); }, 60000) : null;
 
-    fetch(CFG.apiBase + "/tracks?limit=8", controller ? { signal: controller.signal } : undefined)
+    fetch(CFG.apiBase + "/tracks?limit=12", controller ? { signal: controller.signal } : undefined)
       .then(function (res) {
         return res.ok ? res.json() : null;
       })
@@ -165,7 +192,11 @@
         tracks.forEach(function (track) {
           if (track && typeof track.title === "string") list.appendChild(buildTrack(track));
         });
-        if (list.children.length) section.hidden = false;
+        if (list.children.length) {
+          section.hidden = false;
+          // La page vient de s'allonger : les sections épinglées doivent recalculer leurs positions.
+          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+        }
       })
       .catch(function () {
         /* silencieux : la section reste masquée */
@@ -180,5 +211,6 @@
   initNav();
   initRecord();
   initReveal();
+  initSpotlight();
   loadCatalog();
 })();

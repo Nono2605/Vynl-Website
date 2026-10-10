@@ -1,9 +1,40 @@
 /* ==========================================================================
-   Vynl — site vitrine
-   Direction artistique : un studio d'écoute nocturne. Fond très sombre, une
-   seule source de lumière bleue qui fait briller le vinyle.
-   Règle : 80 % de sombre, 15 % de bleu, 5 % de cyan (le cyan est rare).
+   Vynl, site vitrine
+   Studio d'écoute nocturne : un fond très sombre et une seule source de
+   lumière bleue qui fait briller le vinyle. 80 % sombre, 15 % bleu, 5 % cyan.
+
+   Mise en page éditoriale : très grands titres, éléments qui se chevauchent,
+   sections épinglées au défilement. Tout reste lisible sans JavaScript et sans
+   animation : le mouvement est une amélioration, pas un prérequis.
+
+   Formes : boutons en pilule, grands panneaux 32px, tuiles 24px, badges 8px.
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Polices (hébergées localement, sous-ensemble latin)
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Dela Gothic One";
+  src: url("../assets/fonts/dela-gothic-one-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("../assets/fonts/sora-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* --------------------------------------------------------------------------
+   Tokens
+   -------------------------------------------------------------------------- */
 
 :root {
   /* Palette */
@@ -18,58 +49,59 @@
   --vynl-reflet: #90BFE9;
 
   /* Nuances intermédiaires, toujours dans la famille bleue */
-  --vynl-indigo: #1C2C8C;       /* bleu-violet profond : teinte des sections */
-  --vynl-ocean: #0F4A9E;        /* bleu plus froid, presque pétrole : variation de fond */
-  --vynl-azur: #3D8BFF;         /* bleu électrique : filets, détails */
-  --vynl-azur-clair: #94BFFF;   /* accents de texte : sur-titres, mots mis en valeur */
-  --vynl-ciel: #6FD6FF;         /* entre l'azur clair et le cyan : coches, icônes */
+  --vynl-indigo: #1C2C8C;
+  --vynl-ocean: #0F4A9E;
+  --vynl-azur: #3D8BFF;
+  --vynl-azur-clair: #94BFFF;
+  --vynl-ciel: #6FD6FF;
 
-  /* Texte sur fond sombre : trois niveaux */
+  /* Texte sur fond sombre */
   --vynl-texte: #FFFFFF;
   --vynl-texte-2: #A9B4D6;
   --vynl-texte-3: #6B77A6;
 
-  /* Bordures : sillon à 40 % */
   --vynl-bordure: rgba(50, 66, 140, 0.4);
 
   /* Dégradés et lueurs */
   --vynl-degrade-vague: linear-gradient(180deg, #19E3FF 0%, #0059F9 55%, #001CB2 100%);
   --vynl-degrade-label: linear-gradient(135deg, #19E3FF, #0059F9);
-  /* Transparent aux deux bouts, sur la longueur --blend (rampe en S, sans effet de bord) : la section se fond dans le
-     fond au lieu d'être coupée par un trait */
-  --vynl-degrade-section: linear-gradient(
-    180deg,
-    rgba(28, 44, 140, 0) 0,
-    rgba(28, 44, 140, 0.09) calc(var(--fade) * 0.25),
-    rgba(28, 44, 140, 0.3) calc(var(--fade) * 0.5),
-    rgba(28, 44, 140, 0.51) calc(var(--fade) * 0.75),
-    rgba(28, 44, 140, 0.6) var(--fade),
-    rgba(22, 62, 156, 0.55) calc(100% - var(--fade)),
-    rgba(20, 68, 157, 0.46) calc(100% - var(--fade) * 0.75),
-    rgba(18, 71, 158, 0.28) calc(100% - var(--fade) * 0.5),
-    rgba(16, 73, 158, 0.08) calc(100% - var(--fade) * 0.25),
-    rgba(15, 74, 158, 0) 100%
-  );
-  --vynl-degrade-carte: linear-gradient(165deg, #2A3E99 0%, #1D2E80 50%, #172569 100%);
-  --vynl-liserai: inset 0 1px 0 rgba(144, 191, 233, 0.16);
   --vynl-lueur: 0 0 40px rgba(0, 89, 249, 0.45);
-  --vynl-lueur-cyan: 0 0 16px rgba(25, 227, 255, 0.6);
 
-  /* Forme */
-  --vynl-rayon-carte: 16px;
-  --vynl-rayon-champ: 12px;
+  /* Surfaces : dégradés bleus, liseré lumineux en haut, ombre teintée */
+  --surface-panneau: linear-gradient(165deg, #2A3E99 0%, #1D2E80 50%, #172569 100%);
+  --surface-calme: linear-gradient(165deg, #1B2765 0%, #131C52 100%);
+  --liserai: inset 0 1px 0 rgba(144, 191, 233, 0.18);
+  --ombre-teintee: 0 30px 60px -30px rgba(0, 8, 60, 0.8);
+
+  /* Formes */
+  --r-grand: 32px;
+  --r-panneau: 24px;
+  --r-carte: 16px;
+  --r-badge: 8px;
 
   /* Typographie */
-  --vynl-police-marque: "Dela Gothic One", "Arial Black", system-ui, sans-serif;
-  --vynl-police-texte: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --police-marque: "Dela Gothic One", "Arial Black", system-ui, sans-serif;
+  --police-texte: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Mise en page */
-  --max: 1160px;
-  --blend: clamp(64px, 10vw, 128px); /* débord du fond sur les sections voisines */
-  --fade: calc(var(--blend) * 1.8); /* longueur de la rampe : déborde un peu sur le vide de la section */
-  --gutter: clamp(16px, 5vw, 48px);
+  --max: 1200px;
+  --gutter: clamp(20px, 5vw, 56px);
   --header-h: 72px;
+  --blend: clamp(64px, 10vw, 128px);
+  --fade: calc(var(--blend) * 1.8);
+  --section-pad: clamp(80px, 11vw, 144px);
+
+  /* Mouvement */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Échelle de z-index */
+  --z-fond: -1;
+  --z-disque: 0;
+  --z-contenu: 2;
+  --z-bande: 3;
+  --z-header: 50;
+  --z-skip: 100;
 }
 
 /* --------------------------------------------------------------------------
@@ -96,14 +128,23 @@ html {
 
 body {
   margin: 0;
+  min-height: 100dvh;
   background: var(--vynl-nuit);
   color: var(--vynl-texte);
-  font-family: var(--vynl-police-texte);
+  font-family: var(--police-texte);
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.55;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* Les éléments qui débordent volontairement (bande, mots cinétiques, disque) sont
+   rognés ici à l'horizontale. clip ne crée pas de conteneur de défilement : sticky
+   et l'épinglage continuent de fonctionner. */
+main {
+  overflow-x: clip;
 }
 
 img,
@@ -116,18 +157,26 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-family: var(--vynl-police-texte);
+  font-family: var(--police-texte);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
-/* Les titres d'impact seuls prennent la police de marque (jamais sous 24 px) */
-.hero h1,
-.cta h2 {
-  font-family: var(--vynl-police-marque);
+h1 {
+  font-family: var(--police-marque);
   font-weight: 400;
-  line-height: 1.12;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3.6vw, 2.5rem);
+}
+
+h3 {
+  font-size: 1.25rem;
 }
 
 em {
@@ -135,30 +184,15 @@ em {
   color: var(--vynl-azur-clair);
 }
 
-/* Un seul dégradé sur du texte : le très grand titre ponctuel du hero */
-.hero h1 em {
-  background: linear-gradient(180deg, var(--vynl-cyan) 0%, var(--vynl-bleu) 100%);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
 p {
   margin: 0;
+  max-width: 62ch;
   text-wrap: pretty;
 }
 
 a {
   color: inherit;
-  text-decoration-color: var(--vynl-sillon);
-  text-underline-offset: 0.2em;
-}
-
-a:hover {
-  text-decoration-color: var(--vynl-cyan);
+  text-decoration: none;
 }
 
 ul,
@@ -168,10 +202,9 @@ ol {
   list-style: none;
 }
 
-/* Focus : anneau cyan 2 px */
 :focus-visible {
   outline: 2px solid var(--vynl-cyan);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: 6px;
 }
 
@@ -183,8 +216,8 @@ ol {
   position: absolute;
   left: var(--gutter);
   top: -100px;
-  z-index: 200;
-  padding: 0.7rem 1.25rem;
+  z-index: var(--z-skip);
+  padding: 0.75rem 1.25rem;
   background: var(--vynl-texte);
   color: var(--vynl-nuit);
   border-radius: 999px;
@@ -202,21 +235,25 @@ ol {
   padding-inline: var(--gutter);
 }
 
-/* --------------------------------------------------------------------------
-   Motif : les sillons
-   -------------------------------------------------------------------------- */
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  fill: currentColor;
+}
 
-/* Cercles concentriques en filigrane : grands, transparents (5 à 10 %) */
+/* Sillons : cercles concentriques en filigrane, grands et très transparents */
 .has-grooves {
   position: relative;
-  overflow: hidden;
   isolation: isolate;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .grooves {
   position: absolute;
-  z-index: -1;
-  width: var(--size, 760px);
+  z-index: var(--z-fond);
+  width: var(--size, 820px);
   aspect-ratio: 1;
   border-radius: 50%;
   pointer-events: none;
@@ -229,44 +266,10 @@ ol {
   mask-image: radial-gradient(circle closest-side, #000 25%, transparent 100%);
 }
 
-/* Trois filets serrés : l'espace entre deux plages d'un disque */
-.rule {
-  height: 9px;
-  border: 0;
-  background: linear-gradient(
-    rgba(120, 168, 255, 0.32) 0 1px,
-    transparent 1px 4px,
-    rgba(120, 168, 255, 0.32) 4px 5px,
-    transparent 5px 8px,
-    rgba(120, 168, 255, 0.32) 8px 9px
-  );
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
-}
-
 /* --------------------------------------------------------------------------
-   Composants
+   Boutons : pilule de 48 px. Un primaire, un contour, un lien.
    -------------------------------------------------------------------------- */
 
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  color: var(--vynl-azur-clair);
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.eyebrow::before {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: linear-gradient(90deg, var(--vynl-cyan), transparent);
-  opacity: 0.9;
-}
-
-/* Boutons : pilule de 48 px */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -280,7 +283,7 @@ ol {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.2;
-  text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease),
     box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
@@ -288,6 +291,11 @@ ol {
 
 .btn:active {
   transform: scale(0.98);
+}
+
+/* Bouton magnétique (piloté par GSAP) : seule la couleur transitionne */
+.btn.is-magnetic {
+  transition-property: background-color, border-color, box-shadow;
 }
 
 .btn--primary {
@@ -300,21 +308,14 @@ ol {
   box-shadow: var(--vynl-lueur);
 }
 
-.btn--primary:active {
-  background: var(--vynl-bleu-profond);
-}
-
 .btn--ghost {
   border-color: var(--vynl-sillon);
   color: var(--vynl-texte);
 }
 
 .btn--ghost:hover {
-  background: var(--vynl-vinyle);
-}
-
-.btn--ghost:active {
-  background: var(--vynl-abysse);
+  background: rgba(23, 32, 79, 0.8);
+  border-color: var(--vynl-azur);
 }
 
 .btn--sm {
@@ -326,130 +327,88 @@ ol {
 .btn-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
 }
 
-.text-link {
+.link-arrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  color: var(--vynl-texte);
+  gap: 0.5rem;
   font-weight: 600;
-  text-decoration: none;
-  border-bottom: 1px solid var(--vynl-sillon);
-  padding-bottom: 2px;
-  transition: border-color 0.25s var(--ease);
-}
-
-.text-link:hover {
-  border-bottom-color: var(--vynl-cyan);
-}
-
-/* Carte : rayon 16 px, fond vinyle */
-.card {
-  padding: clamp(22px, 3vw, 32px);
-  background: var(--vynl-degrade-carte);
-  border: 1px solid var(--vynl-bordure);
-  border-radius: var(--vynl-rayon-carte);
-  box-shadow: var(--vynl-liserai);
-}
-
-/* Icônes : trait fin, bouts arrondis */
-.icon {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.75;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.card .icon {
-  margin-bottom: 1.25rem;
-  color: var(--vynl-reflet);
-}
-
-/* Trois nuances qui alternent d'une carte à l'autre */
-.grid > .card:nth-child(3n + 2) .icon,
-.grid > .card:nth-child(3n + 2) .feature__top .icon {
   color: var(--vynl-azur-clair);
+  transition: color 0.25s var(--ease);
 }
 
-.grid > .card:nth-child(3n) .icon,
-.grid > .card:nth-child(3n) .feature__top .icon {
-  color: var(--vynl-ciel);
+.link-arrow .icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  transition: transform 0.25s var(--ease-out);
 }
 
-.card h3 {
-  margin-bottom: 0.6rem;
-  font-size: 1.25rem;
+.link-arrow:hover {
+  color: var(--vynl-texte);
 }
 
-.card p {
-  color: var(--vynl-texte-2);
-  font-size: 0.9375rem;
+.link-arrow:hover .icon {
+  transform: translateX(4px);
 }
 
-/* Badges de provenance : un simple contour, cyan pour tout ce qui touche à l'IA */
+/* --------------------------------------------------------------------------
+   Étiquettes : AI-assisted en azur clair, AI-generated en cyan
+   -------------------------------------------------------------------------- */
+
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.7rem;
-  border: 1px solid var(--vynl-texte-3);
-  border-radius: 999px;
-  color: var(--vynl-texte-2);
+  padding: 0.3rem 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: var(--r-badge);
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.08em;
-  line-height: 1.5;
+  line-height: 1.4;
   text-transform: uppercase;
   white-space: nowrap;
-}
-
-.badge--ai {
-  border-color: var(--vynl-cyan);
-  color: var(--vynl-cyan);
 }
 
 .badge--assist {
-  border-color: var(--vynl-azur-clair);
   color: var(--vynl-azur-clair);
 }
 
-/* Statut d'une fonctionnalité : cyan = actif, pointillé = pas encore */
+.badge--ai {
+  color: var(--vynl-cyan);
+}
+
+.badge--xl {
+  padding: 0.55em 1.1em;
+  border-radius: 0.5em;
+  border-width: 2px;
+  font-size: clamp(1.25rem, 4.2vw, 3.75rem);
+  letter-spacing: 0.04em;
+  background: rgba(5, 8, 22, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
 .status {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.15rem 0.7rem;
-  border: 1px solid rgba(25, 227, 255, 0.5);
-  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid rgba(25, 227, 255, 0.45);
+  border-radius: var(--r-badge);
   color: var(--vynl-cyan);
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
-}
-
-.status::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--vynl-cyan);
 }
 
 .status--soon {
   border-color: var(--vynl-sillon);
   border-style: dashed;
   color: var(--vynl-texte-2);
-}
-
-.status--soon::before {
-  background: transparent;
-  border: 1px solid var(--vynl-texte-3);
 }
 
 /* --------------------------------------------------------------------------
@@ -459,7 +418,7 @@ ol {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: var(--z-header);
   background: rgba(11, 17, 48, 0.7);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -474,13 +433,11 @@ ol {
   min-height: var(--header-h);
 }
 
-/* Logo horizontal : icône à gauche, nom à droite */
 .logo {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   color: var(--vynl-texte);
-  text-decoration: none;
 }
 
 .logo__mark {
@@ -489,9 +446,8 @@ ol {
 }
 
 .logo__word {
-  font-family: var(--vynl-police-marque);
+  font-family: var(--police-marque);
   font-size: 1.375rem;
-  font-weight: 400;
   line-height: 1;
 }
 
@@ -507,7 +463,6 @@ ol {
   border-radius: 999px;
   color: var(--vynl-texte-2);
   font-size: 0.9375rem;
-  text-decoration: none;
   transition: color 0.25s var(--ease);
 }
 
@@ -519,7 +474,8 @@ ol {
 .nav a[aria-current="page"] {
   text-decoration: underline;
   text-decoration-color: var(--vynl-cyan);
-  text-underline-offset: 0.5em;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.55em;
 }
 
 .nav__mobile-only {
@@ -536,7 +492,6 @@ ol {
   padding: 0.5rem 0.9rem;
   color: var(--vynl-texte-2);
   font-size: 0.9375rem;
-  text-decoration: none;
   transition: color 0.25s var(--ease);
 }
 
@@ -559,9 +514,8 @@ ol {
 }
 
 .nav-toggle .icon {
-  width: 20px;
-  height: 20px;
-  margin: 0;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .nav-toggle .icon--close {
@@ -613,7 +567,7 @@ ol {
   }
 
   .nav a {
-    padding: 0.9rem 0;
+    padding: 1rem 0;
     border-bottom: 1px solid var(--vynl-bordure);
     border-radius: 0;
     font-size: 1.0625rem;
@@ -630,112 +584,161 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
-   Sections
+   Sections : le fond se fond dans le voisin, jamais de trait de séparation.
+   Le dégradé déborde de --blend sans bouger le contenu.
    -------------------------------------------------------------------------- */
 
 .section {
-  padding-block: clamp(72px, 10vw, 128px);
-  background:
-    radial-gradient(40% 40% at 88% 40%, rgba(25, 227, 255, 0.06), transparent),
-    linear-gradient(180deg, rgba(15, 74, 158, 0) 0%, rgba(15, 74, 158, 0.2) 50%, rgba(15, 74, 158, 0) 100%);
+  padding-block: var(--section-pad);
 }
 
-/* Le fond déborde de --blend sur les sections voisines, sans bouger le contenu :
-   deux sections bleues qui se suivent se superposent et se mélangent sans creux. */
-.section--surface {
+.section--tint {
   margin-block: calc(var(--blend) * -1);
-  padding-block: calc(clamp(72px, 10vw, 128px) + var(--blend));
+  padding-block: calc(var(--section-pad) + var(--blend));
   background:
     radial-gradient(45% 40% at 12% 45%, rgba(61, 139, 255, 0.16), transparent),
-    var(--vynl-degrade-section);
+    linear-gradient(
+      180deg,
+      rgba(28, 44, 140, 0) 0,
+      rgba(28, 44, 140, 0.09) calc(var(--fade) * 0.25),
+      rgba(28, 44, 140, 0.3) calc(var(--fade) * 0.5),
+      rgba(28, 44, 140, 0.51) calc(var(--fade) * 0.75),
+      rgba(28, 44, 140, 0.6) var(--fade),
+      rgba(22, 62, 156, 0.55) calc(100% - var(--fade)),
+      rgba(20, 68, 157, 0.46) calc(100% - var(--fade) * 0.75),
+      rgba(18, 71, 158, 0.28) calc(100% - var(--fade) * 0.5),
+      rgba(16, 73, 158, 0.08) calc(100% - var(--fade) * 0.25),
+      rgba(15, 74, 158, 0) 100%
+    );
 }
 
 .section__head {
-  max-width: 660px;
-  margin-bottom: clamp(36px, 5vw, 60px);
+  margin-bottom: clamp(40px, 6vw, 72px);
 }
 
-.section__head h2,
-.split h2 {
-  font-size: clamp(1.625rem, 3.4vw, 2rem);
+.section__head h2 {
+  max-width: 22ch;
 }
 
 .section__head p {
   margin-top: 1.25rem;
   color: var(--vynl-texte-2);
-  font-size: 1.0625rem;
-}
-
-.grid {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
 }
 
 /* --------------------------------------------------------------------------
-   Hero : la lueur bleue derrière le disque, c'est la même lumière que l'icône
+   Hero : un titre immense sur deux lignes, le disque derrière et dessous
    -------------------------------------------------------------------------- */
 
 .hero {
-  padding-block: clamp(48px, 8vw, 104px) clamp(64px, 9vw, 120px);
+  position: relative;
+  min-height: min(100dvh, 980px);
+  padding-block: clamp(32px, 7vh, 80px) clamp(72px, 12vh, 140px);
   background:
-    radial-gradient(60% 52% at 74% 50%, rgba(0, 89, 249, 0.25), transparent),
-    radial-gradient(40% 30% at 8% 70%, rgba(61, 139, 255, 0.1), transparent);
+    radial-gradient(60% 55% at 78% 50%, rgba(0, 89, 249, 0.3), transparent),
+    radial-gradient(40% 30% at 6% 70%, rgba(61, 139, 255, 0.1), transparent);
 }
 
 .hero .grooves {
-  right: -260px;
-  top: 50%;
+  right: -320px;
+  top: 46%;
   translate: 0 -50%;
-  --size: 1000px;
+  --size: 1300px;
 }
 
-.hero__grid {
-  display: grid;
-  align-items: center;
-  gap: clamp(40px, 6vw, 88px);
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+.hero__inner {
+  position: relative;
+  z-index: var(--z-contenu);
 }
 
-.hero h1 {
-  font-size: clamp(2.25rem, 5.4vw, 4rem);
-  letter-spacing: -0.01em;
+.hero__title {
+  font-size: clamp(2.4rem, 6.9vw, 6.5rem);
+}
+
+.line {
+  display: block;
+}
+
+/* Chaque mot monte derrière un masque : l'entrée est un révélateur, pas un fondu */
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.w > span {
+  display: inline-block;
+}
+
+.line--grad .w > span {
+  background: linear-gradient(180deg, var(--vynl-cyan) 0%, var(--vynl-bleu) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  padding-bottom: 0.06em;
+}
+
+.hero__copy {
+  max-width: 34rem;
+  margin-top: clamp(24px, 4.5vh, 52px);
 }
 
 .hero__lead {
-  max-width: 34rem;
-  margin-block: 1.75rem 2.25rem;
+  margin-bottom: 2rem;
   color: var(--vynl-texte-2);
-  font-size: clamp(1.0625rem, 1.6vw, 1.1875rem);
+  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+}
+
+.hero__actions {
+  margin-top: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero__hint {
+  display: none;
+  color: var(--vynl-texte-2);
+  font-size: 0.8125rem;
+}
+
+.js .hero__hint {
+  display: inline;
+}
+
+/* Le disque : énorme, qui sort de l'écran, passé derrière le titre */
+.player {
+  position: absolute;
+  z-index: var(--z-disque);
+  right: calc(var(--gutter) * -1.6);
+  top: clamp(96px, 17vh, 190px);
+  width: min(62vw, 820px);
 }
 
 @media (max-width: 860px) {
   .hero {
-    background: radial-gradient(90% 26% at 50% 74%, rgba(0, 89, 249, 0.25), transparent);
+    min-height: 0;
   }
 
-  .hero__grid {
-    grid-template-columns: 1fr;
+  .player {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: min(100%, 460px);
+    margin: clamp(32px, 6vw, 56px) auto 0;
   }
 }
 
 /* --------------------------------------------------------------------------
-   Le disque
-   Le cercle structure l'écran : les sillons remplissent l'espace, l'arc cyan
-   dans la dernière plage est la position dans le morceau.
+   Le disque : les sillons remplissent l'espace, l'arc cyan est la position
+   dans le morceau, le label est un dégradé.
    -------------------------------------------------------------------------- */
-
-.player {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
 
 .record {
   --cycle: 42s;
   position: relative;
-  width: min(100%, 460px);
   aspect-ratio: 1;
 }
 
@@ -747,12 +750,9 @@ ol {
     radial-gradient(circle closest-side, transparent 0 95.5%, #02030c 95.5%),
     repeating-radial-gradient(circle closest-side, transparent 0 21px, rgba(50, 66, 140, 0.75) 21px 22px),
     repeating-radial-gradient(circle closest-side, #0B1130 0 1.4px, #101946 1.4px 3px);
-  box-shadow:
-    0 40px 90px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(50, 66, 140, 0.6);
+  box-shadow: 0 50px 100px -20px rgba(0, 4, 40, 0.9), 0 0 0 1px rgba(50, 66, 140, 0.6);
 }
 
-/* Reflet vinyle : une bande diagonale glacée, fixe — c'est le disque qui tourne */
 .record__disc::after {
   content: "";
   position: absolute;
@@ -761,7 +761,7 @@ ol {
   background: conic-gradient(
     from 35deg,
     transparent 0 8%,
-    rgba(144, 191, 233, 0.2) 14%,
+    rgba(144, 191, 233, 0.22) 14%,
     transparent 22% 58%,
     rgba(144, 191, 233, 0.12) 64%,
     transparent 72%
@@ -793,7 +793,6 @@ ol {
   stroke-width: 0.5;
 }
 
-/* Piste #32428C, partie lue cyan, point blanc */
 .record__track {
   fill: none;
   stroke: var(--vynl-sillon);
@@ -821,14 +820,11 @@ ol {
 
 .record__text {
   fill: var(--vynl-nuit);
-  font-family: var(--vynl-police-texte);
+  font-family: var(--police-texte);
   font-size: 5px;
   font-weight: 600;
 }
 
-/* Les animations existent toujours mais restent en pause : la pause fige le
-   disque à sa position. Seul .is-playing (posé par le JS) les fait tourner.
-   Le décalage négatif place l'état de repos à ~38 % du morceau. */
 .record__label,
 .record__arc,
 .record__head {
@@ -867,48 +863,43 @@ ol {
   }
 }
 
-.transport {
+/* Bouton lecture : dégradé Vague + lueur. Masqué sans JS (il ne servirait à rien). */
+.play-btn {
   display: none;
   align-items: center;
-  gap: 1rem;
-  color: var(--vynl-texte-3);
-  font-size: 0.8125rem;
-}
-
-.js .transport {
-  display: flex;
-}
-
-/* Bouton Lecture : cercle, dégradé Vague + lueur bleue (la seule lueur forte) */
-.play-btn {
-  display: inline-flex;
-  align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   padding: 0;
   background: var(--vynl-degrade-vague);
   border: 0;
   border-radius: 50%;
   color: var(--vynl-texte);
   cursor: pointer;
-  box-shadow: var(--vynl-lueur);
-  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  box-shadow: var(--vynl-lueur), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease);
+}
+
+.js .play-btn {
+  display: inline-flex;
 }
 
 .play-btn:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .play-btn:active {
   transform: scale(0.96);
 }
 
+/* Correction optique : le triangle de lecture est décalé vers la droite */
+.play-btn .icon--play {
+  margin-left: 3px;
+}
+
 .play-btn .icon {
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  stroke-width: 2;
+  width: 1.625rem;
+  height: 1.625rem;
 }
 
 .play-btn[aria-pressed="true"] .icon--play,
@@ -917,55 +908,347 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
-   Étiquettes (provenance)
+   Bande défilante : une seule par page, inclinée, qui mord sur les sections
    -------------------------------------------------------------------------- */
 
-.label-list {
-  border-bottom: 1px solid var(--vynl-bordure);
+.marquee {
+  position: relative;
+  z-index: var(--z-bande);
+  width: 110vw;
+  margin: clamp(16px, 3vw, 48px) -5vw;
+  rotate: -2.2deg;
+  overflow: hidden;
+  background: var(--vynl-bleu);
+  box-shadow: 0 24px 70px -20px rgba(0, 70, 255, 0.7);
 }
 
-.label-row {
-  display: grid;
-  gap: 0.5rem 2rem;
-  align-items: baseline;
-  grid-template-columns: 170px 1fr;
-  padding-block: 1.5rem;
-  border-top: 1px solid var(--vynl-bordure);
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 42s linear infinite;
 }
 
-.label-row p {
-  max-width: 44rem;
-  color: var(--vynl-texte-2);
+.marquee__group {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  padding-right: clamp(24px, 4vw, 56px);
 }
 
-.label-row strong {
-  color: var(--vynl-texte);
-  font-weight: 600;
+.marquee__item {
+  padding-block: 0.45em;
+  font-family: var(--police-marque);
+  font-size: clamp(1.75rem, 4.4vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
-.label-note {
-  margin-top: 2rem;
+.marquee__item--outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.92);
 }
 
-@media (max-width: 620px) {
-  .label-row {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
+.marquee .icon {
+  width: clamp(1.75rem, 3.6vw, 3.25rem);
+  height: clamp(1.75rem, 3.6vw, 3.25rem);
+  color: var(--vynl-cyan);
+}
 
-  .label-row .badge {
-    justify-self: start;
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }
 
 /* --------------------------------------------------------------------------
-   Catalogue réel (API) : pochettes découpées en disque
+   Accueil : pourquoi Vynl. Défilement horizontal épinglé sur ordinateur,
+   pile verticale sur mobile. Sans JS : défilement horizontal natif.
+   -------------------------------------------------------------------------- */
+
+.why__pin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100dvh;
+  padding-top: var(--header-h);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--vynl-sillon) transparent;
+}
+
+.why__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 48px);
+  width: max-content;
+  padding-inline: var(--gutter);
+}
+
+.why.is-pinned .why__pin {
+  overflow: hidden;
+  scroll-snap-type: none;
+}
+
+.why__intro {
+  flex: 0 0 min(36vw, 520px);
+  scroll-snap-align: start;
+}
+
+.why__intro h2 {
+  font-size: clamp(2rem, 4.4vw, 3.75rem);
+  line-height: 1.08;
+}
+
+.why__panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 0 0 min(58vw, 740px);
+  height: min(68dvh, 580px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(28px, 3.6vw, 56px);
+  border-radius: var(--r-grand);
+  scroll-snap-align: center;
+  box-shadow: var(--liserai), var(--ombre-teintee);
+}
+
+.why__panel h3 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.75rem, 3.2vw, 2.875rem);
+  line-height: 1.08;
+}
+
+.why__panel p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.3vw, 1.1875rem);
+}
+
+.why__panel--a {
+  background:
+    radial-gradient(90% 80% at 0% 0%, rgba(25, 227, 255, 0.36), transparent 60%),
+    linear-gradient(160deg, #1B47DA, #0E2A9E);
+  rotate: -1.6deg;
+  translate: 0 2dvh;
+}
+
+.why__panel--b {
+  background:
+    radial-gradient(80% 80% at 100% 0%, rgba(111, 214, 255, 0.28), transparent 60%),
+    linear-gradient(160deg, #2A3E99, #0F4A9E);
+  rotate: 1.2deg;
+  translate: 0 -3dvh;
+}
+
+.why__panel--c {
+  background:
+    radial-gradient(90% 90% at 50% 100%, rgba(61, 139, 255, 0.4), transparent 60%),
+    linear-gradient(160deg, #162366, #1C2C8C);
+  rotate: -1deg;
+  translate: 0 1dvh;
+}
+
+.why__ghost {
+  position: absolute;
+  z-index: var(--z-fond);
+  top: -8%;
+  right: -5%;
+  width: clamp(220px, 28vw, 420px);
+  height: clamp(220px, 28vw, 420px);
+  color: var(--vynl-texte);
+  opacity: 0.14;
+}
+
+.why__progress {
+  display: none;
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 6dvh;
+  height: 2px;
+  background: var(--vynl-bordure);
+}
+
+.why.is-pinned .why__progress {
+  display: block;
+}
+
+.why__progress span {
+  display: block;
+  height: 100%;
+  background: var(--vynl-cyan);
+  box-shadow: 0 0 12px rgba(25, 227, 255, 0.7);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@media (max-width: 860px) {
+  .why {
+    padding-block: var(--section-pad);
+  }
+
+  .why__pin {
+    display: block;
+    min-height: 0;
+    padding-top: 0;
+    overflow: visible;
+  }
+
+  .why__track {
+    display: grid;
+    gap: 20px;
+    width: auto;
+  }
+
+  .why__intro {
+    margin-bottom: 20px;
+  }
+
+  .why__panel {
+    height: auto;
+    min-height: 300px;
+    rotate: 0deg;
+    translate: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Étiquettes : deux mots immenses, un par étiquette. Le mot EST le titre
+   (h3) : plus de doublon avec un badge. Il tient entièrement dans la largeur,
+   arrive de côté et se remplit au défilement, puis le texte se pose dessous.
+   -------------------------------------------------------------------------- */
+
+.kinetic {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(56px, 8vw, 112px);
+  margin-top: clamp(32px, 5vw, 64px);
+}
+
+.kinetic__word {
+  --fill: 100%;
+  max-width: none;
+  margin: 0 0 clamp(16px, 2vw, 28px);
+  padding-bottom: 0.06em;
+  font-family: var(--police-marque);
+  font-size: clamp(1.8rem, 7.6vw, 6.6rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: clamp(1.25px, 0.2vw, 2px) var(--stroke);
+  background: linear-gradient(90deg, var(--stroke) var(--fill), transparent var(--fill));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.kinetic__item--assist {
+  --stroke: var(--vynl-azur-clair);
+}
+
+.kinetic__item--gen {
+  --stroke: var(--vynl-cyan);
+  text-align: right;
+}
+
+.kinetic__body {
+  max-width: 36ch;
+}
+
+.kinetic__item--gen .kinetic__body {
+  margin-left: auto;
+}
+
+.kinetic__lead {
+  margin-bottom: 0.5rem;
+  color: var(--vynl-texte);
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.kinetic__body p:last-child {
+  color: var(--vynl-texte-2);
+}
+
+.labels__more {
+  margin-top: clamp(32px, 4vw, 56px);
+}
+
+
+/* Deux faits, en ligne, sans carte (page Transparence) */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px clamp(24px, 5vw, 64px);
+  margin-top: clamp(48px, 6vw, 80px);
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  column-gap: 20px;
+}
+
+.fact h3 {
+  margin-bottom: 0.4rem;
+}
+
+.fact p {
+  color: var(--vynl-texte-2);
+}
+
+@media (max-width: 760px) {
+  .facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tile-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--surface-panneau);
+  box-shadow: var(--liserai);
+  color: var(--vynl-ciel);
+}
+
+.tile-icon .icon {
+  width: 1.625rem;
+  height: 1.625rem;
+}
+
+/* --------------------------------------------------------------------------
+   Catalogue réel (API) : rangée de grands disques à faire défiler
    -------------------------------------------------------------------------- */
 
 .crate {
-  display: grid;
-  gap: clamp(20px, 3vw, 32px);
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+  display: flex;
+  gap: clamp(24px, 4vw, 48px);
+  padding: 16px var(--gutter) 32px;
+  margin-inline: calc(var(--gutter) * -1);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: thin;
+  scrollbar-color: var(--vynl-sillon) transparent;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 64px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 64px), transparent);
+}
+
+.crate__item {
+  flex: 0 0 clamp(170px, 20vw, 260px);
+  min-width: 0;
+  scroll-snap-align: start;
 }
 
 .disc {
@@ -974,7 +1257,19 @@ ol {
   border-radius: 50%;
   overflow: hidden;
   background: var(--vynl-abysse);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--vynl-bordure);
+  box-shadow: 0 30px 50px -18px rgba(0, 4, 40, 0.9), 0 0 0 1px var(--vynl-bordure);
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+
+.crate__item:nth-child(even) .disc {
+  translate: 0 28px;
+}
+
+@media (hover: hover) {
+  .crate__item:hover .disc {
+    transform: scale(1.06) rotate(8deg);
+    box-shadow: 0 40px 70px -18px rgba(0, 60, 255, 0.55), 0 0 0 1px var(--vynl-azur);
+  }
 }
 
 .disc img {
@@ -1009,27 +1304,24 @@ ol {
   translate: -50% -50%;
 }
 
-/* Pas de pochette : un label bleu, comme sur un disque nu */
 .disc--blank {
   background:
     radial-gradient(circle closest-side, var(--vynl-bleu) 0 34%, transparent 34%),
     repeating-radial-gradient(circle closest-side, #0B1130 0 1.4px, #101946 1.4px 3px);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .crate__item:hover .disc img {
-    animation: spin 12s linear infinite;
-  }
-}
-
 .crate__title {
-  margin-top: 0.9rem;
-  font-size: 1rem;
+  margin-top: 1.25rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.crate__item:nth-child(even) .crate__title {
+  margin-top: calc(1.25rem + 28px);
 }
 
 .crate__artist {
@@ -1040,137 +1332,680 @@ ol {
   white-space: nowrap;
 }
 
-.section__foot {
-  margin-top: clamp(32px, 4vw, 48px);
+.studio__actions {
+  margin-top: clamp(32px, 4vw, 56px);
 }
 
 /* --------------------------------------------------------------------------
-   Bandeau créateurs / listes
+   Accueil : le studio en quatre cartes qui se superposent (pile collante)
    -------------------------------------------------------------------------- */
 
+.stack__list {
+  display: grid;
+}
+
+.stack__card {
+  position: sticky;
+  top: calc(var(--header-h) + 16px + var(--n) * 22px);
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: 1.5rem clamp(24px, 4vw, 64px);
+  min-height: clamp(380px, 64dvh, 600px);
+  margin-bottom: clamp(24px, 9vh, 110px);
+  padding: clamp(28px, 4vw, 64px);
+  border-radius: 36px;
+  box-shadow: var(--liserai), 0 -30px 60px -24px rgba(0, 8, 60, 0.85);
+  transform-origin: 50% 0;
+}
+
+.stack__card:last-child {
+  margin-bottom: 0;
+}
+
+.stack__word {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-self: end;
+  font-family: var(--police-marque);
+  font-size: clamp(3rem, 10.5vw, 9.5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+}
+
+.stack__card p {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  max-width: 30ch;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+.stack__ghost {
+  position: absolute;
+  z-index: var(--z-fond);
+  left: -3%;
+  top: -10%;
+  width: clamp(200px, 26vw, 380px);
+  height: clamp(200px, 26vw, 380px);
+  color: var(--vynl-texte);
+  opacity: 0.12;
+}
+
+.stack__card:nth-child(1) {
+  background: radial-gradient(70% 70% at 100% 0%, rgba(25, 227, 255, 0.3), transparent 60%), linear-gradient(150deg, #1D45D8, #0E2A9E);
+}
+
+.stack__card:nth-child(2) {
+  background: radial-gradient(70% 70% at 0% 100%, rgba(111, 214, 255, 0.25), transparent 60%), linear-gradient(150deg, #2A3E99, #14338F);
+}
+
+.stack__card:nth-child(3) {
+  background: radial-gradient(70% 70% at 100% 100%, rgba(61, 139, 255, 0.35), transparent 60%), linear-gradient(150deg, #0F4A9E, #1B3FB5);
+}
+
+.stack__card:nth-child(4) {
+  background: radial-gradient(80% 80% at 50% 0%, rgba(25, 227, 255, 0.28), transparent 60%), linear-gradient(150deg, #0D5AA3, #0A357A);
+}
+
+@media (max-width: 860px) {
+  .stack__card {
+    position: relative;
+    top: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    min-height: 300px;
+    margin-bottom: 16px;
+    border-radius: var(--r-grand);
+  }
+
+  .stack__card p {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+
+  .stack__word {
+    grid-row: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Appel final : le logo en grand, qui grossit derrière un titre immense
+   -------------------------------------------------------------------------- */
+
+.cta {
+  padding-block: clamp(120px, 20vw, 260px);
+  text-align: center;
+  background: radial-gradient(60% 50% at 50% 50%, rgba(0, 89, 249, 0.28), transparent);
+}
+
+.cta__mark {
+  position: absolute;
+  z-index: var(--z-fond);
+  left: 50%;
+  top: 50%;
+  width: min(760px, 100vw);
+  translate: -50% -50%;
+  opacity: 0.2;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 45%, transparent);
+  mask-image: radial-gradient(circle closest-side, #000 45%, transparent);
+}
+
+.cta h2 {
+  max-width: 14ch;
+  margin-inline: auto;
+  font-family: var(--police-marque);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 8.6vw, 8rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.cta p {
+  margin: 1.75rem auto 2.5rem;
+  color: var(--vynl-texte-2);
+}
+
+.cta .btn-row {
+  justify-content: center;
+}
+
+/* --------------------------------------------------------------------------
+   Pied de page : liens sobres, et le nom de la marque en géant
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+  position: relative;
+  overflow: clip;
+  padding-top: clamp(48px, 7vw, 80px);
+}
+
+.site-footer__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px 48px;
+}
+
+.site-footer__brand p {
+  margin-top: 0.9rem;
+  color: var(--vynl-texte-2);
+  font-size: 0.9375rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  max-width: 34rem;
+}
+
+.footer-links a {
+  color: var(--vynl-texte-2);
+  font-size: 0.9375rem;
+  transition: color 0.25s var(--ease);
+}
+
+.footer-links a:hover {
+  color: var(--vynl-texte);
+}
+
+.footer-mark {
+  max-width: none;
+  margin: clamp(32px, 6vw, 80px) 0 0;
+  font-family: var(--police-marque);
+  font-size: 27vw;
+  line-height: 0.76;
+  letter-spacing: 0.045em;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  color: transparent;
+  background: linear-gradient(180deg, rgba(61, 139, 255, 0.5), rgba(0, 89, 249, 0) 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 1px rgba(148, 191, 255, 0.32);
+}
+
+.site-footer__legal {
+  position: relative;
+  max-width: none;
+  padding-block: 20px 28px;
+  color: var(--vynl-texte-3);
+  font-size: 0.8125rem;
+}
+
+/* --------------------------------------------------------------------------
+   Pages intérieures : hero géant avec le logo ou les étiquettes qui flottent
+   -------------------------------------------------------------------------- */
+
+.hero--page {
+  position: relative;
+  min-height: min(86dvh, 820px);
+  padding-block: clamp(40px, 9vh, 104px) clamp(80px, 12vh, 140px);
+  background:
+    radial-gradient(60% 55% at 78% 50%, rgba(0, 89, 249, 0.26), transparent),
+    radial-gradient(40% 30% at 5% 70%, rgba(61, 139, 255, 0.08), transparent);
+}
+
+.hero--page .grooves {
+  right: -300px;
+  top: 50%;
+  translate: 0 -50%;
+  --size: 1100px;
+}
+
+.hero--page__inner {
+  position: relative;
+  z-index: var(--z-contenu);
+}
+
+.hero--page h1 {
+  font-size: clamp(2.25rem, 6.4vw, 6rem);
+}
+
+.hero--page .hero__lead {
+  max-width: 32rem;
+  margin-block: clamp(20px, 4vh, 40px) 2rem;
+}
+
+.hero__art {
+  position: absolute;
+  z-index: var(--z-disque);
+}
+
+/* Le logo en grand, penché, qui flotte derrière le titre */
+.hero__art--logo {
+  right: -5vw;
+  top: clamp(64px, 11vh, 140px);
+  width: min(52vw, 680px);
+  rotate: -9deg;
+}
+
+.hero__art--logo::before {
+  content: "";
+  position: absolute;
+  inset: -16%;
+  z-index: var(--z-fond);
+  background: radial-gradient(circle closest-side, rgba(0, 89, 249, 0.55), transparent);
+}
+
+.hero__art--logo img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 50px 70px rgba(0, 12, 90, 0.75));
+}
+
+/* Les deux étiquettes, géantes, qui se croisent */
+/* Dans la moitié basse du hero : les étiquettes ne passent jamais sur le titre */
+.hero__art--badges {
+  right: 0;
+  top: 50%;
+  bottom: 0;
+  width: min(60vw, 780px);
+  pointer-events: none;
+}
+
+.hero__art--badges .badge {
+  position: absolute;
+}
+
+.hero__art--badges .badge:nth-child(1) {
+  right: 20%;
+  top: 0;
+  rotate: -6deg;
+  box-shadow: 0 0 60px rgba(148, 191, 255, 0.28);
+}
+
+.hero__art--badges .badge:nth-child(2) {
+  right: 2%;
+  top: 44%;
+  rotate: 4deg;
+  box-shadow: 0 0 60px rgba(25, 227, 255, 0.3);
+}
+
+@media (max-width: 860px) {
+  .hero--page {
+    min-height: 0;
+  }
+
+  .hero__art {
+    position: relative;
+    margin-top: 40px;
+  }
+
+  .hero__art--logo {
+    right: auto;
+    top: auto;
+    width: min(70%, 340px);
+    margin-inline: auto;
+  }
+
+  .hero__art--badges {
+    width: auto;
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+    bottom: auto;
+    right: auto;
+  }
+
+  .hero__art--badges .badge {
+    position: static;
+  }
+
+  .hero__art--badges .badge:nth-child(2) {
+    margin-left: 12%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Page Créateurs : bento penché, huit cellules sur douze colonnes
+   -------------------------------------------------------------------------- */
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 24px);
+  align-items: start;
+}
+
+.tile {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 250px;
+  padding: clamp(24px, 3vw, 40px);
+  border-radius: var(--r-panneau);
+  background: var(--surface-calme);
+  box-shadow: var(--liserai), var(--ombre-teintee);
+  rotate: var(--r, 0deg);
+  translate: 0 var(--y, 0px);
+  transition: rotate 0.6s var(--ease-out), translate 0.6s var(--ease-out), box-shadow 0.4s var(--ease);
+}
+
+.tile h3 {
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
+}
+
+.tile p {
+  color: var(--vynl-texte-2);
+  font-size: 0.9375rem;
+}
+
+.tile__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: auto;
+  padding-bottom: 1.5rem;
+}
+
+.tile--accent {
+  min-height: 360px;
+  background:
+    radial-gradient(70% 80% at 100% 0%, rgba(25, 227, 255, 0.3), transparent 60%),
+    linear-gradient(135deg, #2A3E99, #1B47DA, #172569);
+  background-size: 100% 100%, 220% 220%;
+  animation: sheen 12s ease-in-out infinite alternate;
+}
+
+.tile--accent h3 {
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.tile--accent p {
+  font-size: 1.0625rem;
+  max-width: 34ch;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+@keyframes sheen {
+  to {
+    background-position: 0 0, 100% 100%;
+  }
+}
+
+.tile--soon {
+  background: transparent;
+  box-shadow: none;
+  outline: 1px dashed var(--vynl-sillon);
+  outline-offset: -1px;
+}
+
+.tile__ghost {
+  position: absolute;
+  z-index: var(--z-fond);
+  right: -20px;
+  bottom: -28px;
+  width: 200px;
+  height: 200px;
+  color: var(--vynl-texte);
+  opacity: 0.08;
+}
+
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-fond);
+  border-radius: inherit;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgba(127, 176, 255, 0.2), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover {
+    rotate: 0deg;
+    translate: 0 calc(var(--y, 0px) - 8px);
+  }
+
+  .tile:hover::after {
+    opacity: 1;
+  }
+}
+
+.b-5 { grid-column: span 5; }
+.b-7 { grid-column: span 7; }
+.b-4 { grid-column: span 4; }
+.b-8 { grid-column: span 8; }
+
+@media (max-width: 860px) {
+  .b-5,
+  .b-7,
+  .b-4,
+  .b-8 {
+    grid-column: 1 / -1;
+  }
+
+  .tile {
+    rotate: 0deg;
+    translate: none;
+    min-height: 0;
+  }
+}
+
+/* Frise verticale en zigzag, le fil se dessine au défilement */
+.timeline {
+  position: relative;
+}
+
+.timeline__list {
+  display: grid;
+  gap: clamp(32px, 6vw, 80px);
+}
+
+.timeline__line {
+  position: absolute;
+  left: 50%;
+  top: 28px;
+  bottom: 28px;
+  width: 2px;
+  translate: -50% 0;
+  background: linear-gradient(180deg, var(--vynl-azur), rgba(50, 66, 140, 0.2));
+  box-shadow: 0 0 14px rgba(61, 139, 255, 0.5);
+  transform-origin: top;
+}
+
+.timeline__item {
+  position: relative;
+  width: calc(50% - 64px);
+}
+
+.timeline__item:nth-child(odd) {
+  justify-self: start;
+  text-align: right;
+}
+
+.timeline__item:nth-child(even) {
+  justify-self: end;
+}
+
+.timeline__item .tile-icon {
+  position: absolute;
+  top: 0;
+  background: var(--surface-panneau);
+  box-shadow: 0 0 0 8px var(--vynl-nuit), var(--liserai);
+}
+
+.timeline__item:nth-child(odd) .tile-icon {
+  right: -92px;
+}
+
+.timeline__item:nth-child(even) .tile-icon {
+  left: -92px;
+}
+
+.timeline__item h3 {
+  margin-bottom: 0.6rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  line-height: 1.1;
+}
+
+.timeline__item p {
+  color: var(--vynl-texte-2);
+}
+
+.timeline__item:nth-child(odd) p {
+  margin-left: auto;
+}
+
+@media (max-width: 860px) {
+  .timeline__line {
+    left: 28px;
+  }
+
+  .timeline__item {
+    width: auto;
+    padding-left: 88px;
+    text-align: left !important;
+    justify-self: stretch !important;
+  }
+
+  .timeline__item .tile-icon {
+    left: 0 !important;
+    right: auto !important;
+  }
+
+  .timeline__item p {
+    margin-left: 0 !important;
+  }
+}
+
+/* Questionnaire */
 .split {
   display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  column-gap: clamp(32px, 7vw, 96px);
   align-items: center;
-  gap: clamp(32px, 6vw, 88px);
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.split h2 {
+  font-size: clamp(2rem, 4.8vw, 4rem);
+  line-height: 1.06;
+}
+
+.split__lead {
+  margin-top: 1.25rem;
+  color: var(--vynl-texte-2);
+}
+
+.checks {
+  display: grid;
+  gap: 28px;
+}
+
+.checks li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 16px;
+  color: var(--vynl-texte-2);
+}
+
+.checks .icon {
+  margin-top: 0.1rem;
+  color: var(--vynl-ciel);
+}
+
+.checks strong {
+  color: var(--vynl-texte);
+  font-weight: 600;
 }
 
 @media (max-width: 860px) {
   .split {
     grid-template-columns: 1fr;
+    row-gap: 40px;
   }
 }
 
-.split__lead {
-  margin-block: 1.25rem 2rem;
-  color: var(--vynl-texte-2);
-  font-size: 1.0625rem;
-}
-
-.check-list li {
-  display: flex;
-  gap: 0.9rem;
-  padding-block: 1rem;
-  border-top: 1px solid var(--vynl-bordure);
-}
-
-.check-list li:last-child {
-  border-bottom: 1px solid var(--vynl-bordure);
-}
-
-.check-list .icon {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  margin-top: 0.15rem;
-  color: var(--vynl-ciel);
-}
-
-.check-list span {
-  color: var(--vynl-texte-2);
-}
-
-.check-list strong {
-  color: var(--vynl-texte);
-  font-weight: 600;
-}
-
 /* --------------------------------------------------------------------------
-   Étapes numérotées
+   Page Transparence : comparaison et schéma des sillons
    -------------------------------------------------------------------------- */
 
-.steps {
+.compare {
   display: grid;
-  gap: 20px;
-  counter-reset: step;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  border-radius: var(--r-grand);
+  overflow: hidden;
+  box-shadow: var(--liserai), var(--ombre-teintee);
 }
 
-.steps li {
-  counter-increment: step;
-  padding-top: 1.25rem;
-  border-top: 1px solid transparent;
-  border-image: linear-gradient(90deg, var(--vynl-azur), rgba(50, 66, 140, 0.3)) 1;
+.compare__side {
+  padding: clamp(28px, 4vw, 56px);
 }
 
-.steps li::before {
-  content: counter(step, decimal-leading-zero);
+.compare__side--muted {
+  background: linear-gradient(165deg, #0F1742, #0B1130);
+  color: var(--vynl-texte-2);
+}
+
+.compare__side--accent {
+  background:
+    radial-gradient(80% 90% at 100% 0%, rgba(25, 227, 255, 0.24), transparent 60%),
+    var(--surface-panneau);
+}
+
+.compare__tag {
   display: block;
   margin-bottom: 1rem;
-  color: var(--vynl-azur-clair);
-  font-family: var(--vynl-police-marque);
-  font-size: 2rem;
-  line-height: 1;
-  opacity: 0.85;
-}
-
-.steps h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-}
-
-.steps p {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--vynl-texte-2);
-  font-size: 0.9375rem;
 }
 
-/* --------------------------------------------------------------------------
-   Fonctionnalités du Studio
-   -------------------------------------------------------------------------- */
-
-.feature__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+.compare__side--accent .compare__tag {
+  color: var(--vynl-cyan);
 }
 
-.feature__top .icon {
-  margin: 0;
+.compare h3 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--vynl-texte);
 }
 
-/* --------------------------------------------------------------------------
-   Transparence : schéma des sillons + comparaison
-   -------------------------------------------------------------------------- */
+.compare p {
+  color: inherit;
+}
 
-.diagram {
-  display: grid;
-  align-items: center;
-  gap: clamp(28px, 5vw, 64px);
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+.compare__side--accent p {
+  color: rgba(255, 255, 255, 0.84);
 }
 
 @media (max-width: 760px) {
-  .diagram {
+  .compare {
     grid-template-columns: 1fr;
-    justify-items: center;
   }
+}
+
+.diagram {
+  display: grid;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+  margin-top: clamp(64px, 9vw, 120px);
 }
 
 .diagram svg {
   width: 100%;
-  max-width: 340px;
+  max-width: 440px;
   height: auto;
 }
 
@@ -1183,76 +2018,52 @@ ol {
 .diagram__arc {
   fill: none;
   stroke: var(--vynl-cyan);
-  stroke-width: 1.6;
+  stroke-width: 1.8;
   stroke-linecap: round;
+  filter: drop-shadow(0 0 2px rgba(25, 227, 255, 0.6));
 }
 
-.diagram__legend {
-  align-self: stretch;
-}
-
-.diagram__legend li {
-  display: flex;
+.legend li {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
   gap: 1rem;
-  padding-block: 1rem;
+  padding-block: 1.25rem;
   border-top: 1px solid var(--vynl-bordure);
 }
 
-.diagram__legend li:last-child {
+.legend li:last-child {
   border-bottom: 1px solid var(--vynl-bordure);
 }
 
-.diagram__legend strong {
-  flex: none;
-  min-width: 7.5rem;
+.legend strong {
   font-weight: 600;
 }
 
-.diagram__legend span {
+.legend span {
   color: var(--vynl-texte-2);
 }
 
 .fine-print {
-  margin-top: 1.5rem;
-  color: var(--vynl-texte-3);
+  margin-top: 1.25rem;
+  color: var(--vynl-texte-2);
   font-size: 0.8125rem;
-}
-
-.compare {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-}
-
-/* Carte mise en avant : liseré brillant en haut, comme le bord du V */
-.compare .card--accent {
-  border-top-color: rgba(25, 227, 255, 0.5);
-}
-
-.compare .tag {
-  display: inline-block;
-  margin-bottom: 1rem;
-  color: var(--vynl-texte-3);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.compare .card--accent .tag {
-  color: var(--vynl-cyan);
 }
 
 .notice {
-  display: flex;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  background: var(--vynl-vinyle);
-  border: 1px solid var(--vynl-bordure);
-  border-left: 3px solid var(--vynl-cyan);
-  border-radius: var(--vynl-rayon-champ);
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 16px;
+  margin-top: clamp(48px, 7vw, 88px);
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--r-carte);
+  background: var(--surface-calme);
+  box-shadow: var(--liserai);
   color: var(--vynl-texte-2);
   font-size: 0.9375rem;
+}
+
+.notice .icon {
+  color: var(--vynl-cyan);
 }
 
 .notice strong {
@@ -1260,119 +2071,95 @@ ol {
   font-weight: 600;
 }
 
-/* --------------------------------------------------------------------------
-   Appel final
-   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .diagram {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
 
-.cta {
-  padding-block: clamp(80px, 12vw, 152px);
-  text-align: center;
-  background: radial-gradient(60% 50% at 50% 50%, rgba(0, 89, 249, 0.25), transparent);
-}
+  .legend {
+    width: 100%;
+  }
 
-.cta .grooves {
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  --size: 1100px;
-}
-
-.cta h2 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  letter-spacing: -0.01em;
-}
-
-.cta h2 em {
-  color: var(--vynl-reflet);
-}
-
-.cta p {
-  max-width: 30rem;
-  margin: 1.25rem auto 2.25rem;
-  color: var(--vynl-texte-2);
-  font-size: 1.0625rem;
-}
-
-.cta .btn-row {
-  justify-content: center;
+  .legend li {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
 }
 
 /* --------------------------------------------------------------------------
-   Pied de page
+   404
    -------------------------------------------------------------------------- */
 
-.site-footer {
-  padding-block: clamp(48px, 7vw, 80px) 32px;
-  background: var(--vynl-nuit);
-}
-
-.site-footer__grid {
+.notfound {
   display: grid;
-  gap: 40px;
-  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
-  margin-top: clamp(40px, 6vw, 64px);
+  place-items: center;
+  min-height: calc(100dvh - var(--header-h));
+  padding-block: 64px;
+  text-align: center;
+  background: radial-gradient(55% 45% at 50% 45%, rgba(0, 89, 249, 0.28), transparent);
 }
 
-@media (max-width: 760px) {
-  .site-footer__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .site-footer__brand {
-    grid-column: 1 / -1;
-  }
-}
-
-.site-footer__brand p {
-  max-width: 20rem;
-  margin-top: 1rem;
-  color: var(--vynl-texte-2);
-  font-size: 0.9375rem;
-}
-
-.site-footer__title {
+.notfound h1 {
   margin-bottom: 1rem;
-  color: var(--vynl-texte);
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: clamp(2.5rem, 9vw, 6.5rem);
 }
 
-.site-footer li + li {
-  margin-top: 0.6rem;
-}
-
-.site-footer li a {
+.notfound p {
+  margin: 0 auto 2rem;
   color: var(--vynl-texte-2);
-  font-size: 0.9375rem;
-  text-decoration: none;
-  transition: color 0.25s var(--ease);
-}
-
-.site-footer li a:hover {
-  color: var(--vynl-texte);
-}
-
-.site-footer__legal {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: clamp(40px, 6vw, 64px);
-  padding-top: 24px;
-  border-top: 1px solid var(--vynl-bordure);
-  color: var(--vynl-texte-3);
-  font-size: 0.8125rem;
 }
 
 /* --------------------------------------------------------------------------
-   Apparition au défilement (activée seulement si le JS tourne) — 300 ms
+   Mouvement. Les états de départ ne sont posés que si le JS tourne et que
+   l'utilisateur n'a pas demandé moins d'animations.
    -------------------------------------------------------------------------- */
+
+@keyframes word-in {
+  from {
+    transform: translateY(108%) rotate(5deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes float {
+  from {
+    translate: 0 -10px;
+  }
+  to {
+    translate: 0 14px;
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
+  .js .w > span {
+    animation: word-in 1.1s var(--ease-out) both;
+    animation-delay: calc(var(--d, 0) * 90ms + 120ms);
+  }
+
+  .js .rise {
+    animation: rise 0.9s var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 110ms + 450ms);
+  }
+
   .js [data-reveal] {
     opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    transform: translateY(18px);
+    transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 70ms);
   }
 
   .js [data-reveal].is-visible {
@@ -1380,11 +2167,17 @@ ol {
     transform: none;
   }
 
-  .js [data-reveal-delay="1"] {
-    transition-delay: 0.06s;
+  .hero__art--logo img {
+    animation: float 7s ease-in-out infinite alternate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
   }
 
-  .js [data-reveal-delay="2"] {
-    transition-delay: 0.12s;
+  .tile--accent {
+    animation: none;
   }
 }

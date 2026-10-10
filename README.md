@@ -1,6 +1,7 @@
-# Vynl — site vitrine
+# Vynl, site vitrine
 
-Site marketing statique de Vynl. HTML, CSS et JavaScript natifs : pas de
+Site marketing statique de Vynl, la plateforme de streaming de musique IA
+(AI-generated et AI-assisted). HTML, CSS et JavaScript natifs : pas de
 framework, pas de build, aucune dépendance. Il oriente vers l'app auditeur et
 le Creator Studio, et affiche le catalogue réel via l'API publique.
 
@@ -8,18 +9,25 @@ le Creator Studio, et affiche le catalogue réel via l'API publique.
 
 | Fichier | Contenu |
 | --- | --- |
-| `index.html` | Accueil : hero (disque), pourquoi Vynl, les 3 étiquettes, catalogue réel, créateurs |
-| `creators.html` | Creator Studio : fonctionnalités (Live / Coming), parcours, prérequis |
+| `index.html` | Accueil : hero (disque géant), bande défilante, pourquoi Vynl (défilement horizontal épinglé), les 2 étiquettes, catalogue réel, studio (pile de cartes), appel final |
+| `creators.html` | Creator Studio : bento incliné des fonctionnalités (Live / Coming), frise verticale en 4 étapes, prérequis |
 | `transparency.html` | Étiquettes AI-assisted / AI-generated, royalties centrées sur l'utilisateur |
+| `404.html` | Page introuvable (chemins absolus : elle est servie à l'adresse demandée) |
 
 ## Structure
 
 ```
-css/style.css    tokens de design + tous les composants
-js/config.js     URLs des autres apps et de l'API (seul endroit à modifier)
-js/main.js       liens, menu mobile, disque, apparition au scroll, catalogue
-favicon.png, apple-touch-icon.png, assets/vynl-icon.png
-vercel.json      { "framework": null }
+css/style.css          tokens de design + tous les composants
+js/config.js           URLs des autres apps et de l'API (seul endroit à modifier)
+js/main.js             liens, menu mobile, disque, apparition au scroll, éclairage des tuiles, catalogue
+js/motion.js           scénographie au défilement (GSAP + ScrollTrigger), tout est optionnel
+assets/vendor/         GSAP 3.12.7 et ScrollTrigger, hébergés localement (116 Ko)
+assets/fonts/          Dela Gothic One et Sora (latin, hébergées localement)
+assets/icons.svg       sprite d'icônes Phosphor (regular, play et pause en fill)
+assets/vynl-icon.png   icône du logo, 192 px (en-tête et pied de page)
+assets/vynl-logo-720.webp   logo en grand, avec transparence (hero Créateurs, filigrane de l'appel final)
+favicon.png, apple-touch-icon.png
+vercel.json            { "framework": null }
 ```
 
 ## Lancer en local
@@ -41,35 +49,44 @@ sombre, 15 % de bleu, 5 % de cyan (le cyan est rare : ce qui est actif).
 | Token | Valeur | Usage |
 | --- | --- | --- |
 | `--vynl-nuit` | `#050816` | fond principal |
-| `--vynl-abysse` | `#0B1130` | surfaces : en-tête, sections alternées |
-| `--vynl-vinyle` | `#17204F` | cartes, notices |
+| `--vynl-abysse` | `#0B1130` | menu mobile, fonds de disque |
+| `--vynl-vinyle` | `#17204F` | survols |
 | `--vynl-sillon` | `#32428C` | bordures (à 40 %), pistes de progression |
 | `--vynl-bleu` / `--vynl-bleu-profond` | `#0059F9` / `#001CB2` | boutons, survol |
-| `--vynl-cyan` | `#19E3FF` | accent rare : actif, focus, badges IA |
-| `--vynl-reflet` | `#90BFE9` | reflets, icônes secondaires |
-| `--vynl-indigo` | `#1C2C8C` | teinte des sections (bleu-violet profond) |
-| `--vynl-ocean` | `#0F4A9E` | variation plus froide des fonds |
-| `--vynl-azur` | `#3D8BFF` | bleu électrique : filets, détails |
-| `--vynl-azur-clair` | `#94BFFF` | sur-titres, mots mis en valeur, badge AI-assisted |
-| `--vynl-ciel` | `#6FD6FF` | coches et icônes (entre azur et cyan) |
+| `--vynl-cyan` | `#19E3FF` | accent rare : actif, focus, badge AI-generated |
+| `--vynl-reflet` | `#90BFE9` | reflets du disque |
+| `--vynl-indigo` / `--vynl-ocean` | `#1C2C8C` / `#0F4A9E` | teintes des sections et des panneaux |
+| `--vynl-azur` / `--vynl-azur-clair` / `--vynl-ciel` | `#3D8BFF` / `#94BFFF` / `#6FD6FF` | détails, mots mis en valeur, icônes |
 
-Les nuances intermédiaires restent dans la famille bleue : les cartes sont en
-dégradé indigo, et les sections bleues se fondent dans le fond (rampe en S sur
-`--fade`, débord `--blend` sur les sections voisines) — jamais de trait de séparation, les icônes alternent reflet / azur clair /
-ciel, et les deux étiquettes se distinguent par la teinte (AI-assisted en azur
-clair, AI-generated en cyan).
+Texte : blanc `#FFFFFF`, bleu-gris `#A9B4D6`, bleu-gris foncé `#6B77A6`
+(réservé à la ligne légale, jamais sur fond bleu : le contraste y est trop bas).
 
-Texte : blanc `#FFFFFF`, bleu-gris `#A9B4D6`, bleu-gris foncé `#6B77A6`.
+Polices : **Dela Gothic One** pour la marque et les deux grands titres
+d'impact (hero et appel final, jamais sous 24 px), **Sora** pour tout le
+reste. Formes : boutons en pilule de 48 px, panneaux 24 px, cartes 16 px,
+badges 8 px. Une seule lueur forte par écran, animations de 200 à 500 ms.
+Seul dégradé sur du texte : l'accent des titres de hero.
 
-Polices (Google Fonts) : **Dela Gothic One** pour la marque et les grands
-titres d'impact (jamais sous 24 px), **Sora** pour tout le reste. Boutons en
-pilule de 48 px, cartes à 16 px, icônes en trait de 1,75 px. Une seule lueur
-forte par écran, animations de 200 à 300 ms. Seul dégradé sur du texte :
-l'accent du titre du hero.
+## Principes de mise en page
 
-Logo : `assets/vynl-icon.png` (icône seule, 192 px) + le nom en Dela Gothic One,
-assemblés en version horizontale dans l'en-tête et le pied de page. Favicon :
-`favicon.png` et `apple-touch-icon.png`, générés depuis la même icône.
+- **Pas de trait entre les sections** : les sections bleues (`.section--tint`)
+  se fondent dans le fond. Le dégradé est transparent aux deux bouts (rampe en
+  S sur `--fade`) et déborde de `--blend` sur les voisines sans bouger le
+  contenu, donc deux sections bleues qui se suivent se mélangent sans creux.
+- **Un seul H1 par page**, des H2 qui portent de vrais mots-clés (musique IA,
+  artistes IA). Pas de H2 décoratifs : les titres du pied de page sont des `p`.
+- **Aucun tiret long** dans le texte visible (point, virgule ou deux-points).
+- **Mouvement motivé** : chaque animation a une raison (voir l'en-tête de
+  `js/motion.js`). Le disque et le logo tournent avec le défilement ; la section
+  « why » est épinglée et défile à l'horizontale (trois idées, dans l'ordre) ;
+  les mots AI-assisted / AI-generated arrivent de côté et se remplissent ; les
+  cartes du studio se superposent en s'assombrissant ; le fil de la frise et les
+  arcs du schéma se dessinent. Avec `prefers-reduced-motion`, sans JavaScript ou
+  si GSAP ne charge pas : la section « why » devient un défilement horizontal
+  natif, la pile de cartes reste collante en CSS pur, les mots sont déjà pleins.
+- **Mots d'étiquette = titres** : « AI-assisted » et « AI-generated » sont des
+  `h3` visibles (pas de badge en doublon), dimensionnés pour tenir en entier dans
+  la largeur sur ordinateur comme sur mobile.
 
 ## À savoir
 
@@ -77,8 +94,13 @@ assemblés en version horizontale dans l'en-tête et le pied de page. Favicon :
   `data-link="<clé>"`. Le `href` écrit dans le HTML n'est qu'un repli sans JS.
 - **CORS** : le catalogue appelle l'API depuis le navigateur. Le domaine de ce
   site doit figurer dans `CORS_ALLOWED_ORIGINS` sur Render, sinon la section
-  « Just pressed » ne s'affichera jamais (sans erreur visible).
+  « New AI tracks, just pressed » ne s'affichera jamais (sans erreur visible).
 - **Aucune donnée inventée** : pas de faux artistes ni de chiffres. Les
   fonctionnalités pas encore construites sont marquées « Coming ».
 - **Animation du disque** : purement décorative. Elle démarre à l'arrêt si le
   visiteur a activé `prefers-reduced-motion`.
+- **Thème** : sombre uniquement, comme dans la DA (le mode clair n'est pas prévu
+  pour le site).
+- **À ajouter plus tard** : pages légales (confidentialité, conditions), image
+  de partage Open Graph (demande une URL absolue du domaine final), `sitemap.xml`
+  et `robots.txt` une fois le domaine définitif connu.
