@@ -35,6 +35,58 @@
   var mm = gsap.matchMedia();
 
   /* ------------------------------------------------------------------------
+     Ordinateur et mobile : section "why" épinglée, défilement horizontal.
+     Créée EN PREMIER : un épinglage décale tout ce qui est en dessous, et ScrollTrigger
+     calcule les positions dans l'ordre de création. Créé après, il laissait les mots
+     des étiquettes (et la pile, l'appel final...) déjà terminés dès le chargement.
+     ------------------------------------------------------------------------ */
+  mm.add("(prefers-reduced-motion: no-preference)", function () {
+    var why = $(".why");
+    if (!why) return;
+    var pin = $(".why__pin", why);
+    var track = $(".why__track", why);
+    if (!pin || !track) return;
+
+    why.classList.add("is-pinned");
+    pin.removeAttribute("tabindex");
+
+    function distance() {
+      return Math.max(0, track.scrollWidth - pin.clientWidth);
+    }
+
+    var base = {
+      trigger: pin,
+      start: "top top",
+      end: function () {
+        return "+=" + distance();
+      },
+      scrub: 1,
+      invalidateOnRefresh: true,
+    };
+
+    gsap.to(track, {
+      x: function () {
+        return -distance();
+      },
+      ease: "none",
+      scrollTrigger: Object.assign({ pin: true, anticipatePin: 1, refreshPriority: 1 }, base),
+    });
+
+    var bar = $(".why__progress span", why);
+    if (bar) gsap.to(bar, { scaleX: 1, ease: "none", scrollTrigger: base });
+
+    // Les pictogrammes fantômes glissent à contre-courant : sensation de profondeur
+    $$(".why__ghost", why).forEach(function (ghost) {
+      gsap.fromTo(ghost, { x: -90 }, { x: 90, ease: "none", scrollTrigger: base });
+    });
+
+    return function () {
+      why.classList.remove("is-pinned");
+      pin.setAttribute("tabindex", "0");
+    };
+  });
+
+  /* ------------------------------------------------------------------------
      Partout (ordinateur et mobile), sauf prefers-reduced-motion
      ------------------------------------------------------------------------ */
   mm.add("(prefers-reduced-motion: no-preference)", function () {
@@ -72,13 +124,13 @@
     });
 
     // Mots immenses : chacun arrive de son côté, se remplit, et se pose en place
-    // (l'animation finit avant le milieu de l'écran : le mot est lisible en entier au repos)
+    // (le remplissage se joue sur les deux tiers de l'écran, puis le mot reste plein)
     $$(".kinetic__item").forEach(function (item) {
       var word = $(".kinetic__word", item);
       if (!word) return;
       var dir = item.classList.contains("kinetic__item--gen") ? 1 : -1;
       var shift = window.matchMedia("(min-width: 861px)").matches ? 12 : 8;
-      var trigger = { trigger: word, start: "top 92%", end: "top 48%", scrub: true };
+      var trigger = { trigger: word, start: "top 90%", end: "top 24%", scrub: true };
       gsap.fromTo(word, { x: dir * shift + "vw" }, { x: 0, ease: "none", scrollTrigger: trigger });
       gsap.fromTo(word, { "--fill": "0%" }, { "--fill": "100%", ease: "none", scrollTrigger: trigger });
     });
@@ -172,55 +224,6 @@
         );
       });
     }
-  });
-
-  /* ------------------------------------------------------------------------
-     Ordinateur et mobile : section "why" épinglée, défilement horizontal
-     ------------------------------------------------------------------------ */
-  mm.add("(prefers-reduced-motion: no-preference)", function () {
-    var why = $(".why");
-    if (!why) return;
-    var pin = $(".why__pin", why);
-    var track = $(".why__track", why);
-    if (!pin || !track) return;
-
-    why.classList.add("is-pinned");
-    pin.removeAttribute("tabindex");
-
-    function distance() {
-      return Math.max(0, track.scrollWidth - pin.clientWidth);
-    }
-
-    var base = {
-      trigger: pin,
-      start: "top top",
-      end: function () {
-        return "+=" + distance();
-      },
-      scrub: 1,
-      invalidateOnRefresh: true,
-    };
-
-    gsap.to(track, {
-      x: function () {
-        return -distance();
-      },
-      ease: "none",
-      scrollTrigger: Object.assign({ pin: true, anticipatePin: 1 }, base),
-    });
-
-    var bar = $(".why__progress span", why);
-    if (bar) gsap.to(bar, { scaleX: 1, ease: "none", scrollTrigger: base });
-
-    // Les pictogrammes fantômes glissent à contre-courant : sensation de profondeur
-    $$(".why__ghost", why).forEach(function (ghost) {
-      gsap.fromTo(ghost, { x: -90 }, { x: 90, ease: "none", scrollTrigger: base });
-    });
-
-    return function () {
-      why.classList.remove("is-pinned");
-      pin.setAttribute("tabindex", "0");
-    };
   });
 
   /* ------------------------------------------------------------------------

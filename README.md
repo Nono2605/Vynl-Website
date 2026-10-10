@@ -90,6 +90,11 @@ Seul dégradé sur du texte : l'accent des titres de hero.
   les effets au curseur (éclairage des tuiles, boutons magnétiques) sont réservés
   aux pointeurs précis. `ScrollTrigger.config({ ignoreMobileResize: true })`
   évite que la barre d'adresse mobile ne décale les sections épinglées.
+- **Ordre de création des animations** : `js/motion.js` crée la section épinglée
+  EN PREMIER (avec `refreshPriority`). Un épinglage décale tout ce qui est en
+  dessous et ScrollTrigger calcule les positions dans l'ordre de création : créé
+  après, il laissait les mots des étiquettes, la pile et l'appel final déjà
+  terminés dès le chargement (le remplissage vide vers plein ne se voyait plus).
 - **Mots d'étiquette = titres** : « AI-assisted » et « AI-generated » sont des
   `h3` visibles (pas de badge en doublon), dimensionnés pour tenir en entier dans
   la largeur sur ordinateur comme sur mobile.
