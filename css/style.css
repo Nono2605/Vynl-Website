@@ -726,8 +726,9 @@ ol {
     position: relative;
     right: auto;
     top: auto;
-    width: min(100%, 460px);
-    margin: clamp(32px, 6vw, 56px) auto 0;
+    width: 118vw;
+    max-width: none;
+    margin: clamp(24px, 6vw, 48px) -9vw 0;
   }
 }
 
@@ -1087,33 +1088,19 @@ ol {
   transform-origin: left;
 }
 
+/* Sur mobile : mêmes panneaux épinglés, simplement plus étroits et plus bas */
 @media (max-width: 860px) {
-  .why {
-    padding-block: var(--section-pad);
-  }
-
-  .why__pin {
-    display: block;
-    min-height: 0;
-    padding-top: 0;
-    overflow: visible;
-  }
-
-  .why__track {
-    display: grid;
-    gap: 20px;
-    width: auto;
-  }
-
   .why__intro {
-    margin-bottom: 20px;
+    flex-basis: 76vw;
+  }
+
+  .why__intro h2 {
+    font-size: clamp(2rem, 9.5vw, 3rem);
   }
 
   .why__panel {
-    height: auto;
-    min-height: 300px;
-    rotate: 0deg;
-    translate: none;
+    flex-basis: 82vw;
+    height: min(62dvh, 500px);
   }
 }
 
@@ -1412,25 +1399,29 @@ ol {
   background: radial-gradient(80% 80% at 50% 0%, rgba(25, 227, 255, 0.28), transparent 60%), linear-gradient(150deg, #0D5AA3, #0A357A);
 }
 
+/* Sur mobile : la pile reste collante, avec des cartes plus basses et un décalage plus serré */
 @media (max-width: 860px) {
   .stack__card {
-    position: relative;
-    top: auto;
+    top: calc(var(--header-h) + 12px + var(--n) * 16px);
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    min-height: 300px;
-    margin-bottom: 16px;
+    grid-template-rows: auto 1fr;
+    min-height: clamp(320px, 56dvh, 480px);
+    margin-bottom: 14dvh;
+    padding: 24px;
     border-radius: var(--r-grand);
   }
 
   .stack__card p {
     grid-column: 1;
-    grid-row: auto;
+    grid-row: 1;
     justify-self: start;
+    max-width: 28ch;
   }
 
   .stack__word {
-    grid-row: auto;
+    grid-column: 1;
+    grid-row: 2;
+    font-size: clamp(2.6rem, 17vw, 5rem);
   }
 }
 
@@ -1793,7 +1784,6 @@ ol {
   }
 
   .tile {
-    rotate: 0deg;
     translate: none;
     min-height: 0;
   }

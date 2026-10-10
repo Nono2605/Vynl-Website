@@ -21,6 +21,8 @@
   var ScrollTrigger = window.ScrollTrigger;
   if (!gsap || !ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
+  // Sur mobile, la barre d'adresse qui se rétracte ne doit pas recalculer les sections épinglées.
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   function $(selector, root) {
     return (root || document).querySelector(selector);
@@ -82,21 +84,28 @@
     });
 
     // Les cartes du studio rapetissent et s'assombrissent quand la suivante les recouvre
-    // (jamais d'opacité : on lirait les mots à travers la carte du dessus)
+    // (jamais d'opacité : on lirait les mots à travers la carte du dessus).
+    // La position où chaque carte se colle est lue dans le CSS : ordinateur et mobile
+    // partagent la même animation.
     var cards = $$(".stack__card");
-    if (window.matchMedia("(min-width: 861px)").matches) {
-      cards.forEach(function (card, i) {
-        var next = cards[i + 1];
-        if (!next) return;
-        var stickTop = 72 + 16 + (i + 1) * 22;
-        gsap.to(card, {
-          scale: 0.93,
-          filter: "brightness(0.5)",
-          ease: "none",
-          scrollTrigger: { trigger: next, start: "top bottom", end: "top " + stickTop + "px", scrub: true },
-        });
+    cards.forEach(function (card, i) {
+      var next = cards[i + 1];
+      if (!next) return;
+      gsap.to(card, {
+        scale: 0.93,
+        filter: "brightness(0.5)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: next,
+          start: "top bottom",
+          end: function () {
+            return "top " + (parseFloat(getComputedStyle(next).top) || 100) + "px";
+          },
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
       });
-    }
+    });
 
     // Appel final : le logo grossit et tourne derrière le titre
     $$(".cta").forEach(function (cta) {
@@ -166,9 +175,9 @@
   });
 
   /* ------------------------------------------------------------------------
-     Ordinateur uniquement : section "why" épinglée, défilement horizontal
+     Ordinateur et mobile : section "why" épinglée, défilement horizontal
      ------------------------------------------------------------------------ */
-  mm.add("(min-width: 861px) and (prefers-reduced-motion: no-preference)", function () {
+  mm.add("(prefers-reduced-motion: no-preference)", function () {
     var why = $(".why");
     if (!why) return;
     var pin = $(".why__pin", why);

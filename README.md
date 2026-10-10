@@ -84,6 +84,12 @@ Seul dégradé sur du texte : l'accent des titres de hero.
   arcs du schéma se dessinent. Avec `prefers-reduced-motion`, sans JavaScript ou
   si GSAP ne charge pas : la section « why » devient un défilement horizontal
   natif, la pile de cartes reste collante en CSS pur, les mots sont déjà pleins.
+- **Même scénographie sur mobile et sur ordinateur** : la section « why » est
+  épinglée sur les deux (panneaux à 82 % de la largeur sur mobile), la pile de
+  cartes reste collante, le disque déborde, le bento garde son inclinaison. Seuls
+  les effets au curseur (éclairage des tuiles, boutons magnétiques) sont réservés
+  aux pointeurs précis. `ScrollTrigger.config({ ignoreMobileResize: true })`
+  évite que la barre d'adresse mobile ne décale les sections épinglées.
 - **Mots d'étiquette = titres** : « AI-assisted » et « AI-generated » sont des
   `h3` visibles (pas de badge en doublon), dimensionnés pour tenir en entier dans
   la largeur sur ordinateur comme sur mobile.
