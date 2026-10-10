@@ -47,6 +47,17 @@ sombre, 15 % de bleu, 5 % de cyan (le cyan est rare : ce qui est actif).
 | `--vynl-bleu` / `--vynl-bleu-profond` | `#0059F9` / `#001CB2` | boutons, survol |
 | `--vynl-cyan` | `#19E3FF` | accent rare : actif, focus, badges IA |
 | `--vynl-reflet` | `#90BFE9` | reflets, icônes secondaires |
+| `--vynl-indigo` | `#1C2C8C` | teinte des sections (bleu-violet profond) |
+| `--vynl-ocean` | `#0F4A9E` | variation plus froide des fonds |
+| `--vynl-azur` | `#3D8BFF` | bleu électrique : filets, détails |
+| `--vynl-azur-clair` | `#94BFFF` | sur-titres, mots mis en valeur, badge AI-assisted |
+| `--vynl-ciel` | `#6FD6FF` | coches et icônes (entre azur et cyan) |
+
+Les nuances intermédiaires restent dans la famille bleue : les cartes sont en
+dégradé indigo, et les sections bleues se fondent dans le fond (rampe en S sur
+`--fade`, débord `--blend` sur les sections voisines) — jamais de trait de séparation, les icônes alternent reflet / azur clair /
+ciel, et les deux étiquettes se distinguent par la teinte (AI-assisted en azur
+clair, AI-generated en cyan).
 
 Texte : blanc `#FFFFFF`, bleu-gris `#A9B4D6`, bleu-gris foncé `#6B77A6`.
 

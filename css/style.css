@@ -17,6 +17,13 @@
   --vynl-cyan: #19E3FF;
   --vynl-reflet: #90BFE9;
 
+  /* Nuances intermédiaires, toujours dans la famille bleue */
+  --vynl-indigo: #1C2C8C;       /* bleu-violet profond : teinte des sections */
+  --vynl-ocean: #0F4A9E;        /* bleu plus froid, presque pétrole : variation de fond */
+  --vynl-azur: #3D8BFF;         /* bleu électrique : filets, détails */
+  --vynl-azur-clair: #94BFFF;   /* accents de texte : sur-titres, mots mis en valeur */
+  --vynl-ciel: #6FD6FF;         /* entre l'azur clair et le cyan : coches, icônes */
+
   /* Texte sur fond sombre : trois niveaux */
   --vynl-texte: #FFFFFF;
   --vynl-texte-2: #A9B4D6;
@@ -28,6 +35,23 @@
   /* Dégradés et lueurs */
   --vynl-degrade-vague: linear-gradient(180deg, #19E3FF 0%, #0059F9 55%, #001CB2 100%);
   --vynl-degrade-label: linear-gradient(135deg, #19E3FF, #0059F9);
+  /* Transparent aux deux bouts, sur la longueur --blend (rampe en S, sans effet de bord) : la section se fond dans le
+     fond au lieu d'être coupée par un trait */
+  --vynl-degrade-section: linear-gradient(
+    180deg,
+    rgba(28, 44, 140, 0) 0,
+    rgba(28, 44, 140, 0.09) calc(var(--fade) * 0.25),
+    rgba(28, 44, 140, 0.3) calc(var(--fade) * 0.5),
+    rgba(28, 44, 140, 0.51) calc(var(--fade) * 0.75),
+    rgba(28, 44, 140, 0.6) var(--fade),
+    rgba(22, 62, 156, 0.55) calc(100% - var(--fade)),
+    rgba(20, 68, 157, 0.46) calc(100% - var(--fade) * 0.75),
+    rgba(18, 71, 158, 0.28) calc(100% - var(--fade) * 0.5),
+    rgba(16, 73, 158, 0.08) calc(100% - var(--fade) * 0.25),
+    rgba(15, 74, 158, 0) 100%
+  );
+  --vynl-degrade-carte: linear-gradient(165deg, #2A3E99 0%, #1D2E80 50%, #172569 100%);
+  --vynl-liserai: inset 0 1px 0 rgba(144, 191, 233, 0.16);
   --vynl-lueur: 0 0 40px rgba(0, 89, 249, 0.45);
   --vynl-lueur-cyan: 0 0 16px rgba(25, 227, 255, 0.6);
 
@@ -41,6 +65,8 @@
 
   /* Mise en page */
   --max: 1160px;
+  --blend: clamp(64px, 10vw, 128px); /* débord du fond sur les sections voisines */
+  --fade: calc(var(--blend) * 1.8); /* longueur de la rampe : déborde un peu sur le vide de la section */
   --gutter: clamp(16px, 5vw, 48px);
   --header-h: 72px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -106,7 +132,7 @@ h3 {
 
 em {
   font-style: normal;
-  color: var(--vynl-texte-2);
+  color: var(--vynl-azur-clair);
 }
 
 /* Un seul dégradé sur du texte : le très grand titre ponctuel du hero */
@@ -208,12 +234,14 @@ ol {
   height: 9px;
   border: 0;
   background: linear-gradient(
-    var(--vynl-bordure) 0 1px,
+    rgba(120, 168, 255, 0.32) 0 1px,
     transparent 1px 4px,
-    var(--vynl-bordure) 4px 5px,
+    rgba(120, 168, 255, 0.32) 4px 5px,
     transparent 5px 8px,
-    var(--vynl-bordure) 8px 9px
+    rgba(120, 168, 255, 0.32) 8px 9px
   );
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
 }
 
 /* --------------------------------------------------------------------------
@@ -225,7 +253,7 @@ ol {
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
-  color: var(--vynl-reflet);
+  color: var(--vynl-azur-clair);
   font-size: 0.9375rem;
   font-weight: 500;
 }
@@ -234,8 +262,8 @@ ol {
   content: "";
   width: 28px;
   height: 1px;
-  background: currentColor;
-  opacity: 0.6;
+  background: linear-gradient(90deg, var(--vynl-cyan), transparent);
+  opacity: 0.9;
 }
 
 /* Boutons : pilule de 48 px */
@@ -320,9 +348,10 @@ ol {
 /* Carte : rayon 16 px, fond vinyle */
 .card {
   padding: clamp(22px, 3vw, 32px);
-  background: var(--vynl-vinyle);
+  background: var(--vynl-degrade-carte);
   border: 1px solid var(--vynl-bordure);
   border-radius: var(--vynl-rayon-carte);
+  box-shadow: var(--vynl-liserai);
 }
 
 /* Icônes : trait fin, bouts arrondis */
@@ -339,6 +368,17 @@ ol {
 .card .icon {
   margin-bottom: 1.25rem;
   color: var(--vynl-reflet);
+}
+
+/* Trois nuances qui alternent d'une carte à l'autre */
+.grid > .card:nth-child(3n + 2) .icon,
+.grid > .card:nth-child(3n + 2) .feature__top .icon {
+  color: var(--vynl-azur-clair);
+}
+
+.grid > .card:nth-child(3n) .icon,
+.grid > .card:nth-child(3n) .feature__top .icon {
+  color: var(--vynl-ciel);
 }
 
 .card h3 {
@@ -370,6 +410,11 @@ ol {
 .badge--ai {
   border-color: var(--vynl-cyan);
   color: var(--vynl-cyan);
+}
+
+.badge--assist {
+  border-color: var(--vynl-azur-clair);
+  color: var(--vynl-azur-clair);
 }
 
 /* Statut d'une fonctionnalité : cyan = actif, pointillé = pas encore */
@@ -418,7 +463,8 @@ ol {
   background: rgba(11, 17, 48, 0.7);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--vynl-bordure);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(61, 139, 255, 0.55) 25%, rgba(25, 227, 255, 0.4) 50%, rgba(50, 66, 140, 0.5) 75%, transparent) 1;
 }
 
 .site-header__inner {
@@ -589,15 +635,19 @@ ol {
 
 .section {
   padding-block: clamp(72px, 10vw, 128px);
+  background:
+    radial-gradient(40% 40% at 88% 40%, rgba(25, 227, 255, 0.06), transparent),
+    linear-gradient(180deg, rgba(15, 74, 158, 0) 0%, rgba(15, 74, 158, 0.2) 50%, rgba(15, 74, 158, 0) 100%);
 }
 
+/* Le fond déborde de --blend sur les sections voisines, sans bouger le contenu :
+   deux sections bleues qui se suivent se superposent et se mélangent sans creux. */
 .section--surface {
-  background: var(--vynl-abysse);
-  border-block: 1px solid var(--vynl-bordure);
-}
-
-.section--surface .card {
-  background: var(--vynl-vinyle);
+  margin-block: calc(var(--blend) * -1);
+  padding-block: calc(clamp(72px, 10vw, 128px) + var(--blend));
+  background:
+    radial-gradient(45% 40% at 12% 45%, rgba(61, 139, 255, 0.16), transparent),
+    var(--vynl-degrade-section);
 }
 
 .section__head {
@@ -628,7 +678,9 @@ ol {
 
 .hero {
   padding-block: clamp(48px, 8vw, 104px) clamp(64px, 9vw, 120px);
-  background: radial-gradient(60% 52% at 74% 50%, rgba(0, 89, 249, 0.25), transparent);
+  background:
+    radial-gradient(60% 52% at 74% 50%, rgba(0, 89, 249, 0.25), transparent),
+    radial-gradient(40% 30% at 8% 70%, rgba(61, 139, 255, 0.1), transparent);
 }
 
 .hero .grooves {
@@ -1031,7 +1083,7 @@ ol {
   width: 22px;
   height: 22px;
   margin-top: 0.15rem;
-  color: var(--vynl-cyan);
+  color: var(--vynl-ciel);
 }
 
 .check-list span {
@@ -1057,18 +1109,19 @@ ol {
 .steps li {
   counter-increment: step;
   padding-top: 1.25rem;
-  border-top: 1px solid var(--vynl-sillon);
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, var(--vynl-azur), rgba(50, 66, 140, 0.3)) 1;
 }
 
 .steps li::before {
   content: counter(step, decimal-leading-zero);
   display: block;
   margin-bottom: 1rem;
-  color: var(--vynl-reflet);
+  color: var(--vynl-azur-clair);
   font-family: var(--vynl-police-marque);
   font-size: 2rem;
   line-height: 1;
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .steps h3 {
@@ -1277,7 +1330,7 @@ ol {
   font-size: 0.9375rem;
 }
 
-.site-footer h2 {
+.site-footer__title {
   margin-bottom: 1rem;
   color: var(--vynl-texte);
   font-size: 0.9375rem;
