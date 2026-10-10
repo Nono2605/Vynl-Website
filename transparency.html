@@ -136,18 +136,33 @@
             <circle class="diagram__track" cx="100" cy="100" r="40"/>
             <circle class="diagram__track" cx="100" cy="100" r="62"/>
             <circle class="diagram__track" cx="100" cy="100" r="84"/>
-            <circle class="diagram__arc" cx="100" cy="100" r="40" pathLength="100" stroke-dasharray="62 100" transform="rotate(-90 100 100)"/>
-            <circle class="diagram__arc" cx="100" cy="100" r="62" pathLength="100" stroke-dasharray="28 100" transform="rotate(-90 100 100)"/>
-            <circle class="diagram__arc" cx="100" cy="100" r="84" pathLength="100" stroke-dasharray="10 100" transform="rotate(-90 100 100)"/>
+            <circle class="diagram__arc diagram__arc--1" cx="100" cy="100" r="40" pathLength="100" stroke-dasharray="62 100" transform="rotate(-90 100 100)"/>
+            <circle class="diagram__arc diagram__arc--2" cx="100" cy="100" r="62" pathLength="100" stroke-dasharray="28 100" transform="rotate(-90 100 100)"/>
+            <circle class="diagram__arc diagram__arc--3" cx="100" cy="100" r="84" pathLength="100" stroke-dasharray="10 100" transform="rotate(-90 100 100)"/>
             <circle class="diagram__core" cx="100" cy="100" r="14" fill="url(#core-grad)"/>
+            <text class="diagram__you" x="100" y="102.6" text-anchor="middle">You</text>
           </svg>
           <div data-reveal>
+            <h3 class="diagram__title">One listener, three artists</h3>
+            <p class="diagram__intro">Your subscription is shared out by what you actually play.</p>
             <ul class="legend">
-              <li><strong>Most played</strong><span>The artist you keep coming back to gets the biggest share of your subscription.</span></li>
-              <li><strong>Sometimes</strong><span>The ones you play now and then get a smaller share, in proportion.</span></li>
-              <li><strong>Once</strong><span>An artist you tried a single time still counts.</span></li>
+              <li class="legend__row legend__row--1">
+                <span class="legend__swatch" aria-hidden="true"></span>
+                <div><strong class="legend__name">Most played</strong><span class="legend__text">The artist you keep coming back to gets the biggest share.</span></div>
+                <span class="legend__share">62%</span>
+              </li>
+              <li class="legend__row legend__row--2">
+                <span class="legend__swatch" aria-hidden="true"></span>
+                <div><strong class="legend__name">Sometimes</strong><span class="legend__text">The ones you play now and then get a smaller share, in proportion.</span></div>
+                <span class="legend__share">28%</span>
+              </li>
+              <li class="legend__row legend__row--3">
+                <span class="legend__swatch" aria-hidden="true"></span>
+                <div><strong class="legend__name">Once</strong><span class="legend__text">An artist you tried a single time still counts.</span></div>
+                <span class="legend__share">10%</span>
+              </li>
             </ul>
-            <p class="fine-print">Illustrative only. Real shares depend entirely on your own listening.</p>
+            <p class="fine-print">Example only. Real shares depend entirely on your own listening.</p>
           </div>
         </div>
 

@@ -2025,24 +2025,88 @@ ol {
   filter: drop-shadow(0 0 2px rgba(25, 227, 255, 0.6));
 }
 
-.legend li {
+/* Chaque ligne de la légende a la couleur de son anneau : on voit tout de suite
+   qui est qui. Au survol, les autres anneaux s'estompent. */
+.diagram__title {
+  margin-bottom: 0.6rem;
+  font-size: clamp(1.375rem, 2.4vw, 1.875rem);
+}
+
+.diagram__intro {
+  margin-bottom: 1.75rem;
+  color: var(--vynl-texte-2);
+}
+
+.diagram__arc--1 { stroke: var(--vynl-cyan); }
+.diagram__arc--2 { stroke: var(--vynl-azur); }
+.diagram__arc--3 { stroke: var(--vynl-azur-clair); }
+
+.diagram__you {
+  fill: var(--vynl-nuit);
+  font-family: var(--police-texte);
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.legend__row {
+  --c: var(--vynl-cyan);
   display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
-  gap: 1rem;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  column-gap: 16px;
+  align-items: start;
   padding-block: 1.25rem;
   border-top: 1px solid var(--vynl-bordure);
 }
 
-.legend li:last-child {
+.legend__row:last-child {
   border-bottom: 1px solid var(--vynl-bordure);
 }
 
-.legend strong {
+.legend__row--2 { --c: var(--vynl-azur); }
+.legend__row--3 { --c: var(--vynl-azur-clair); }
+
+.legend__swatch {
+  width: 16px;
+  height: 16px;
+  margin-top: 0.3rem;
+  background: var(--c);
+  border-radius: 50%;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--c) 55%, transparent);
+}
+
+.legend__name {
+  display: block;
+  font-size: 1.0625rem;
   font-weight: 600;
 }
 
-.legend span {
+.legend__text {
+  display: block;
+  margin-top: 0.5rem;
   color: var(--vynl-texte-2);
+}
+
+.legend__share {
+  color: var(--vynl-texte);
+  font-family: var(--police-marque);
+  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .diagram:has(.legend__row--1:hover) .diagram__arc:not(.diagram__arc--1),
+  .diagram:has(.legend__row--2:hover) .diagram__arc:not(.diagram__arc--2),
+  .diagram:has(.legend__row--3:hover) .diagram__arc:not(.diagram__arc--3) {
+    stroke-opacity: 0.2;
+  }
+
+  .legend__row {
+    transition: background-color 0.25s var(--ease);
+  }
+
+  .legend__row:hover {
+    background: rgba(23, 32, 79, 0.45);
+  }
 }
 
 .fine-print {
@@ -2081,11 +2145,6 @@ ol {
 
   .legend {
     width: 100%;
-  }
-
-  .legend li {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
   }
 }
 
