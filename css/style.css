@@ -720,15 +720,35 @@ ol {
 @media (max-width: 860px) {
   .hero {
     min-height: 0;
+    padding-block: 24px 64px;
   }
 
+  .hero .grooves {
+    --size: 820px;
+    right: -260px;
+    top: 52%;
+  }
+
+  .hero__title {
+    font-size: clamp(2.1rem, 9.2vw, 3.25rem);
+  }
+
+  .hero__copy {
+    margin-top: 20px;
+  }
+
+  .hero__lead {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+
+  /* Le disque tient en entier dans l'écran, centré, sous les boutons */
   .player {
     position: relative;
     right: auto;
     top: auto;
-    width: 118vw;
-    max-width: none;
-    margin: clamp(24px, 6vw, 48px) -9vw 0;
+    width: min(76vw, 360px);
+    margin: 40px auto 0;
   }
 }
 

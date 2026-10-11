@@ -8,11 +8,14 @@
   var CFG = window.VYNL || { links: {}, apiBase: "" };
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* Liens vers les autres apps : data-link="signup" donne CFG.links.signup */
+  /* Liens vers les autres apps : data-link="signup" donne CFG.links.signup.
+     Ils s'ouvrent dans un nouvel onglet : le site vitrine reste ouvert. */
   function applyLinks() {
     document.querySelectorAll("[data-link]").forEach(function (el) {
       var url = CFG.links[el.getAttribute("data-link")];
       if (url) el.setAttribute("href", url);
+      el.setAttribute("target", "_blank");
+      el.setAttribute("rel", "noopener");
     });
   }
 
