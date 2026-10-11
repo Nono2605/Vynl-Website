@@ -733,7 +733,10 @@ ol {
     font-size: clamp(2.1rem, 9.2vw, 3.25rem);
   }
 
+  /* Comme sur ordinateur : le texte à gauche, le disque à droite qui sort de l'écran.
+     La colonne de texte est resserrée pour que le disque reste à côté, pas dessous. */
   .hero__copy {
+    max-width: 62vw;
     margin-top: 20px;
   }
 
@@ -742,13 +745,12 @@ ol {
     font-size: 1rem;
   }
 
-  /* Le disque tient en entier dans l'écran, centré, sous les boutons */
   .player {
-    position: relative;
-    right: auto;
-    top: auto;
-    width: min(76vw, 360px);
-    margin: 40px auto 0;
+    right: -36vw;
+    top: 222px;
+    width: 76vw;
+    max-width: none;
+    margin: 0;
   }
 }
 
