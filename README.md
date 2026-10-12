@@ -12,6 +12,7 @@ le Creator Studio, et affiche le catalogue réel via l'API publique.
 | `index.html` | Accueil : hero (disque géant), bande défilante, pourquoi Vynl (défilement horizontal épinglé), les 2 étiquettes, catalogue réel, studio (pile de cartes), appel final |
 | `creators.html` | Creator Studio : bento incliné des fonctionnalités (Live / Coming), frise verticale en 4 étapes, prérequis |
 | `transparency.html` | Étiquettes AI-assisted / AI-generated, royalties centrées sur l'utilisateur |
+| `roadmap.html` | Avancement de la beta : ce qui est en ligne et ce qui reste à construire (abonnements, royalties, versements, migration de la base). Les étapes sont écrites en dur dans le HTML (une `li` par étape, classe `road__item--live` pour « Live ») ; le compteur du hero est un attribut `--v` (pourcentage) et un texte à mettre à jour à la main |
 | `404.html` | Page introuvable (chemins absolus : elle est servie à l'adresse demandée) |
 
 ## Structure

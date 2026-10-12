@@ -2171,6 +2171,178 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
+   Roadmap : une rampe verticale, un point par étape (plein = en ligne,
+   anneau = à venir). Le fil se dessine au défilement.
+   -------------------------------------------------------------------------- */
+
+.road {
+  position: relative;
+  max-width: 880px;
+}
+
+.road__list {
+  display: grid;
+}
+
+.road__line {
+  position: absolute;
+  left: 6px;
+  top: 34px;
+  bottom: 34px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--vynl-azur), rgba(50, 66, 140, 0.25));
+  box-shadow: 0 0 14px rgba(61, 139, 255, 0.4);
+  transform-origin: top;
+}
+
+.road__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.5rem 1.5rem;
+  padding: 1.5rem 0 1.5rem 44px;
+}
+
+.road__dot {
+  position: absolute;
+  left: 0;
+  top: 1.95rem;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border: 2px solid var(--vynl-sillon);
+  border-radius: 50%;
+  background: var(--vynl-nuit);
+}
+
+.road__item--live .road__dot {
+  border-color: var(--vynl-cyan);
+  background: var(--vynl-cyan);
+  box-shadow: 0 0 14px rgba(25, 227, 255, 0.7);
+}
+
+.road__body h3 {
+  margin-bottom: 0.4rem;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+}
+
+.road__body p {
+  color: var(--vynl-texte-2);
+}
+
+.road__item .status {
+  margin-top: 0.15rem;
+}
+
+.text-link {
+  color: var(--vynl-azur-clair);
+  text-decoration: underline;
+  text-decoration-color: rgba(148, 191, 255, 0.45);
+  text-underline-offset: 0.2em;
+  transition: color 0.25s var(--ease);
+}
+
+.text-link:hover {
+  color: var(--vynl-texte);
+}
+
+/* Anneau de progression dans le hero : étapes en ligne sur le total */
+/* Dans la moitié basse du hero : le cercle ne passe jamais sur le titre */
+.hero__art--progress {
+  right: clamp(24px, 7vw, 140px);
+  bottom: clamp(40px, 8vh, 96px);
+  width: min(26vw, 340px);
+  aspect-ratio: 1;
+}
+
+.hero__art--progress svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ring__track {
+  fill: none;
+  stroke: var(--vynl-sillon);
+  stroke-width: 1.4;
+}
+
+.ring__arc {
+  fill: none;
+  stroke: var(--vynl-cyan);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: var(--v) 100;
+  filter: drop-shadow(0 0 4px rgba(25, 227, 255, 0.6));
+}
+
+.ring__count {
+  position: absolute;
+  inset: 0;
+  font-variant-numeric: normal;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  max-width: none;
+  font-family: var(--police-marque);
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  line-height: 1.1;
+}
+
+.ring__count span {
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 1;
+  background: var(--vynl-degrade-vague);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ring__count small {
+  margin-top: 0.5rem;
+  color: var(--vynl-texte-2);
+  font-family: var(--police-texte);
+  font-size: 0.9375rem;
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ring-in {
+    from {
+      stroke-dasharray: 0.01 100;
+    }
+  }
+
+  .js .ring__arc {
+    animation: ring-in 1.6s var(--ease-out) 0.5s both;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero__art--progress {
+    right: auto;
+    bottom: auto;
+    width: min(62vw, 280px);
+    margin: 40px auto 0;
+  }
+
+  .road__item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .road__item .status {
+    grid-row: 1;
+    justify-self: start;
+    margin-bottom: 0.25rem;
+  }
+
+  .road__body {
+    grid-row: 2;
+  }
+}
+
+/* --------------------------------------------------------------------------
    404
    -------------------------------------------------------------------------- */
 

@@ -209,6 +209,17 @@
       });
     }
 
+    // Roadmap : le fil se dessine pendant qu'on descend la liste
+    $$(".road").forEach(function (road) {
+      var line = $(".road__line", road);
+      if (!line) return;
+      gsap.fromTo(
+        line,
+        { scaleY: 0 },
+        { scaleY: 1, ease: "none", scrollTrigger: { trigger: road, start: "top 75%", end: "bottom 65%", scrub: true } }
+      );
+    });
+
     // Schéma des royalties : les arcs se remplissent
     var diagram = $(".diagram");
     if (diagram) {
