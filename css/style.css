@@ -1502,7 +1502,8 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
-   Pied de page : liens sobres, et le nom de la marque en géant
+   Pied de page : la marque et ses liens en colonnes, puis le nom de la marque
+   en géant. Les liens sont blancs ; le texte qui n'est pas un lien reste gris.
    -------------------------------------------------------------------------- */
 
 .site-footer {
@@ -1516,7 +1517,7 @@ ol {
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 32px 48px;
+  gap: 40px 64px;
 }
 
 .site-footer__brand p {
@@ -1525,26 +1526,66 @@ ol {
   font-size: 0.9375rem;
 }
 
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2rem;
-  max-width: 34rem;
+.site-footer__brand .site-footer__legal {
+  margin-top: 1.5rem;
+  color: var(--vynl-texte-3);
+  font-size: 0.8125rem;
 }
 
-.footer-links a {
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 32px clamp(32px, 4.5vw, 64px);
+}
+
+.footer-links__title {
+  margin-bottom: 0.5rem;
   color: var(--vynl-texte-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-links ul {
+  display: grid;
+}
+
+/* Cible tactile d'au moins 40 px de haut (44 px sur mobile) */
+.footer-links a {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  color: var(--vynl-texte);
   font-size: 0.9375rem;
   transition: color 0.25s var(--ease);
 }
 
 .footer-links a:hover {
-  color: var(--vynl-texte);
+  color: var(--vynl-azur-clair);
+  text-decoration: underline;
+  text-decoration-color: rgba(148, 191, 255, 0.45);
+  text-underline-offset: 0.25em;
 }
 
+@media (max-width: 640px) {
+  .footer-links {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-links a {
+    min-height: 44px;
+  }
+}
+
+/* Décoratif : ne doit jamais intercepter un clic, même là où une lettre déborde */
 .footer-mark {
   max-width: none;
   margin: clamp(32px, 6vw, 80px) 0 0;
+  /* La boîte (0.76) est plus basse que les lettres : sans ce padding le bas des
+     lettres serait rogné par le bord du pied de page. La queue du y, elle, déborde. */
+  padding-bottom: 0.14em;
   font-family: var(--police-marque);
   font-size: 27vw;
   line-height: 0.76;
@@ -1552,19 +1593,12 @@ ol {
   text-align: center;
   white-space: nowrap;
   user-select: none;
+  pointer-events: none;
   color: transparent;
   background: linear-gradient(180deg, rgba(61, 139, 255, 0.5), rgba(0, 89, 249, 0) 85%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-stroke: 1px rgba(148, 191, 255, 0.32);
-}
-
-.site-footer__legal {
-  position: relative;
-  max-width: none;
-  padding-block: 20px 28px;
-  color: var(--vynl-texte-3);
-  font-size: 0.8125rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -2509,39 +2543,6 @@ p.dev-note a:hover {
 .tile p.dev-note {
   margin-top: 0;
   font-size: 0.8125rem;
-}
-
-/* --------------------------------------------------------------------------
-   Pied de page : ligne légale et liens vers les textes
-   -------------------------------------------------------------------------- */
-
-.site-footer__bottom {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 2rem;
-  padding-block: 20px 28px;
-}
-
-.site-footer__bottom .site-footer__legal {
-  padding-block: 0;
-}
-
-.legal-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-}
-
-.legal-links a {
-  color: var(--vynl-texte-2);
-  font-size: 0.8125rem;
-  transition: color 0.25s var(--ease);
-}
-
-.legal-links a:hover {
-  color: var(--vynl-texte);
 }
 
 /* --------------------------------------------------------------------------
