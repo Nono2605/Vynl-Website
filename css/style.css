@@ -2436,3 +2436,326 @@ ol {
     animation: none;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Mention « en développement » : discrète, sous les parties pas encore en
+   ligne. Le petit anneau est celui de la roadmap (anneau = à venir).
+   -------------------------------------------------------------------------- */
+
+p.dev-note {
+  max-width: none;
+  margin-top: 0.75rem;
+  color: var(--vynl-texte-2);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+p.dev-note::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 0.5rem;
+  box-sizing: border-box;
+  border: 2px solid var(--vynl-sillon);
+  border-radius: 50%;
+  vertical-align: 0.04em;
+}
+
+p.dev-note a {
+  color: inherit;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: rgba(148, 191, 255, 0.45);
+  text-underline-offset: 0.2em;
+  transition: color 0.25s var(--ease);
+}
+
+p.dev-note a:hover {
+  color: var(--vynl-texte);
+}
+
+/* Dans le hero : collée à la phrase qu'elle nuance */
+.hero__lead--tight {
+  margin-bottom: 0.6rem;
+}
+
+.hero p.dev-note {
+  margin: 0 0 1.75rem;
+}
+
+@media (max-width: 860px) {
+  .hero__lead--tight {
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p.dev-note {
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* Sur les panneaux bleus : le gris-bleu du texte y manque de contraste */
+.why__panel p.dev-note {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.8125rem;
+}
+
+.why__panel p.dev-note::before {
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Dans une tuile « à venir » : l'espacement vient déjà du gap de la tuile */
+.tile p.dev-note {
+  margin-top: 0;
+  font-size: 0.8125rem;
+}
+
+/* --------------------------------------------------------------------------
+   Pied de page : ligne légale et liens vers les textes
+   -------------------------------------------------------------------------- */
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: 20px 28px;
+}
+
+.site-footer__bottom .site-footer__legal {
+  padding-block: 0;
+}
+
+.legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.legal-links a {
+  color: var(--vynl-texte-2);
+  font-size: 0.8125rem;
+  transition: color 0.25s var(--ease);
+}
+
+.legal-links a:hover {
+  color: var(--vynl-texte);
+}
+
+/* --------------------------------------------------------------------------
+   Pages légales : un hero court, puis une colonne de texte étroite avec des
+   titres numérotés. Les [crochets] sont des champs à remplir avec le juriste.
+   -------------------------------------------------------------------------- */
+
+.hero--legal {
+  min-height: 0;
+  padding-block: clamp(32px, 7vh, 80px) clamp(24px, 4vh, 48px);
+}
+
+.hero--legal .grooves {
+  --size: 760px;
+  right: -240px;
+}
+
+.hero--legal h1 {
+  font-size: clamp(2.25rem, 5.4vw, 4.5rem);
+}
+
+.hero--legal .hero__lead {
+  margin-bottom: 0;
+}
+
+.legal {
+  padding-block: clamp(32px, 5vw, 56px) var(--section-pad);
+}
+
+.legal__inner {
+  max-width: 46rem;
+}
+
+.legal .notice {
+  margin-top: 0;
+}
+
+.legal__meta {
+  margin-top: 1.5rem;
+  color: var(--vynl-texte-3);
+  font-size: 0.8125rem;
+}
+
+.legal__toc {
+  margin-top: 2rem;
+}
+
+.legal__toc p {
+  margin-bottom: 0.5rem;
+  color: var(--vynl-texte-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.legal__toc ol {
+  display: grid;
+  gap: 0.25rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  font-size: 0.9375rem;
+}
+
+.legal__toc a {
+  color: var(--vynl-azur-clair);
+  transition: color 0.25s var(--ease);
+}
+
+.legal__toc a:hover {
+  color: var(--vynl-texte);
+}
+
+.legal__body h2 {
+  margin-top: clamp(40px, 5vw, 64px);
+  margin-bottom: 1rem;
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+}
+
+.legal__body h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.0625rem;
+}
+
+.legal__body p,
+.legal__body li {
+  color: var(--vynl-texte-2);
+}
+
+.legal__body p {
+  max-width: 68ch;
+}
+
+.legal__body p + p,
+.legal__body p + ul,
+.legal__body ul + p {
+  margin-top: 0.9rem;
+}
+
+.legal__body ul {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 68ch;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.legal__body li::marker {
+  color: var(--vynl-sillon);
+}
+
+.legal__body strong {
+  color: var(--vynl-texte);
+  font-weight: 600;
+}
+
+.legal__body a {
+  color: var(--vynl-azur-clair);
+  text-decoration: underline;
+  text-decoration-color: rgba(148, 191, 255, 0.45);
+  text-underline-offset: 0.2em;
+  transition: color 0.25s var(--ease);
+}
+
+.legal__body a:hover {
+  color: var(--vynl-texte);
+}
+
+/* Champ à remplir : repérable d'un coup d'œil, à chercher avec « [ » */
+.ph {
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: rgba(25, 227, 255, 0.1);
+  color: var(--vynl-ciel);
+}
+
+.legal-table {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.legal-table table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.legal-table th,
+.legal-table td {
+  padding: 0.75rem 1rem 0.75rem 0;
+  border-bottom: 1px solid var(--vynl-bordure);
+  text-align: left;
+  vertical-align: top;
+}
+
+.legal-table th {
+  color: var(--vynl-texte-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.legal-table td {
+  color: var(--vynl-texte-2);
+}
+
+.legal-table td:first-child {
+  color: var(--vynl-texte);
+  font-weight: 600;
+}
+
+/* Sur mobile : chaque ligne du tableau devient une carte, rien ne défile de côté */
+@media (max-width: 640px) {
+  .legal-table table {
+    min-width: 0;
+  }
+
+  .legal-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .legal-table tr,
+  .legal-table td {
+    display: block;
+  }
+
+  .legal-table tr {
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--vynl-bordure);
+  }
+
+  .legal-table td {
+    padding: 0.25rem 0 0;
+    border: 0;
+  }
+
+  .legal-table td:first-child {
+    padding-top: 0;
+  }
+
+  .legal-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.1rem;
+    color: var(--vynl-azur-clair);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}

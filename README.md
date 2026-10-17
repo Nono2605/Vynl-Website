@@ -13,6 +13,7 @@ le Creator Studio, et affiche le catalogue réel via l'API publique.
 | `creators.html` | Creator Studio : bento incliné des fonctionnalités (Live / Coming), frise verticale en 4 étapes, prérequis |
 | `transparency.html` | Étiquettes AI-assisted / AI-generated, royalties centrées sur l'utilisateur |
 | `roadmap.html` | Avancement de la beta : ce qui est en ligne et ce qui reste à construire (abonnements, royalties, versements, migration de la base). Les étapes sont écrites en dur dans le HTML (une `li` par étape, classe `road__item--live` pour « Live ») ; le compteur du hero est un attribut `--v` (pourcentage) et un texte à mettre à jour à la main |
+| `privacy.html`, `terms.html`, `creator-terms.html`, `legal-notice.html` | **Brouillons juridiques**, à relire avec un juriste (voir « Pages légales » plus bas) |
 | `404.html` | Page introuvable (chemins absolus : elle est servie à l'adresse demandée) |
 
 ## Structure
@@ -27,8 +28,8 @@ assets/fonts/          Dela Gothic One et Sora (latin, hébergées localement)
 assets/icons.svg       sprite d'icônes Phosphor (regular, play et pause en fill)
 assets/vynl-icon.png   icône du logo, 192 px (en-tête et pied de page)
 assets/vynl-logo-720.webp   logo en grand, avec transparence (hero Créateurs, filigrane de l'appel final)
-favicon.png, apple-touch-icon.png
-vercel.json            { "framework": null }
+favicon.ico, favicon-32.png, favicon-192.png, apple-touch-icon.png   (favicon.png : ancien fichier, plus référencé)
+vercel.json            { "framework": null, "cleanUrls": true }
 ```
 
 ## Lancer en local
@@ -40,6 +41,11 @@ python3 -m http.server 8110
 Puis ouvrir `http://localhost:8110`. En local, le catalogue interroge
 `http://localhost:4000` (l'API) ; s'il ne répond pas, la section reste
 simplement masquée.
+
+**URLs propres.** Sur Vercel, `cleanUrls` sert `/roadmap` et redirige
+`/roadmap.html` vers `/roadmap`. Les liens du HTML gardent `.html` pour que la
+navigation marche aussi avec ce serveur Python, qui ne connaît pas les URLs
+propres (le visiteur est simplement redirigé).
 
 ## Identité
 
@@ -113,6 +119,29 @@ Seul dégradé sur du texte : l'accent des titres de hero.
   visiteur a activé `prefers-reduced-motion`.
 - **Thème** : sombre uniquement, comme dans la DA (le mode clair n'est pas prévu
   pour le site).
-- **À ajouter plus tard** : pages légales (confidentialité, conditions), image
-  de partage Open Graph (demande une URL absolue du domaine final), `sitemap.xml`
-  et `robots.txt` une fois le domaine définitif connu.
+- **Mention « en développement »** : sous une promesse pas encore en ligne
+  (paiements, abonnements, stats d'écoute), un petit
+  `<p class="dev-note">… <a href="roadmap.html">See the roadmap</a></p>` (anneau
+  gris comme les étapes « Coming » de la roadmap). À retirer quand la fonction sort.
+- **À ajouter plus tard** : image de partage Open Graph (demande une URL absolue
+  du domaine final), `canonical`, `og:url`, `sitemap.xml` et `robots.txt` une
+  fois le domaine définitif connu.
+
+## Pages légales (brouillons)
+
+`privacy.html`, `terms.html`, `creator-terms.html` et `legal-notice.html` sont des
+**exemples**, écrits à partir de l'inventaire de
+`Vynl-App-1.1.2/V1.1.2/docs/PRIVACY_POLICY_DRAFT.md` et du code de l'API, pour être
+relus avec un juriste (droit suisse nLPD et RGPD). Un bandeau « Draft for legal
+review » est affiché en haut de chaque page.
+
+- Les champs à remplir sont des `<span class="ph">[…]</span>` (société, adresse,
+  contacts, durées, droit applicable). Les retrouver : `grep -n 'class="ph"' *.html`.
+- Les pages portent `<meta name="robots" content="noindex">` : **à retirer** une fois
+  les textes validés, ainsi que le bandeau, la ligne « Draft v0.1 » et le
+  « (Draft) » des titres.
+- Les liens du pied de page (`Privacy`, `Terms`, `Creator Terms`, `Legal notice`)
+  sont sur toutes les pages. Les futures URLs `PRIVACY_POLICY_URL` et `TERMS_URL`
+  de l'app auditeur sont `/privacy` et `/terms`.
+- Le Studio affiche encore un texte provisoire pour les Creator Terms : il doit
+  pointer vers `/creator-terms` une fois le domaine connu.
