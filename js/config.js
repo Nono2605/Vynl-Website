@@ -7,12 +7,12 @@
  */
 window.VYNL = {
   links: {
-    app: "https://music-app-1-0-0.vercel.app",
-    login: "https://music-app-1-0-0.vercel.app/login",
-    signup: "https://music-app-1-0-0.vercel.app/signup",
-    creator: "https://creator-app-pearl-pi.vercel.app",
-    creatorLogin: "https://creator-app-pearl-pi.vercel.app/login",
-    creatorSignup: "https://creator-app-pearl-pi.vercel.app/signup",
+    app: "https://app.vynl.ch",
+    login: "https://app.vynl.ch/login",
+    signup: "https://app.vynl.ch/signup",
+    creator: "https://creator.vynl.ch",
+    creatorLogin: "https://creator.vynl.ch/login",
+    creatorSignup: "https://creator.vynl.ch/signup",
   },
 
   // Le site ne parle qu'à l'API, jamais directement à Supabase.

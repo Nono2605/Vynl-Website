@@ -111,7 +111,7 @@ Seul dégradé sur du texte : l'accent des titres de hero.
 - **Liens vers les apps** : ils vivent dans `js/config.js` et sont injectés via
   `data-link="<clé>"`. Le `href` écrit dans le HTML n'est qu'un repli sans JS.
 - **CORS** : le catalogue appelle l'API depuis le navigateur. Le domaine de ce
-  site doit figurer dans `CORS_ALLOWED_ORIGINS` sur Render, sinon la section
+  site (`https://www.vynl.ch`) doit figurer dans `CORS_ALLOWED_ORIGINS` sur Render, sinon la section
   « New AI tracks, just pressed » ne s'affichera jamais (sans erreur visible).
 - **Aucune donnée inventée** : pas de faux artistes ni de chiffres. Les
   fonctionnalités pas encore construites sont marquées « Coming ».
@@ -123,9 +123,13 @@ Seul dégradé sur du texte : l'accent des titres de hero.
   (paiements, abonnements, stats d'écoute), un petit
   `<p class="dev-note">… <a href="roadmap.html">See the roadmap</a></p>` (anneau
   gris comme les étapes « Coming » de la roadmap). À retirer quand la fonction sort.
-- **À ajouter plus tard** : image de partage Open Graph (demande une URL absolue
-  du domaine final), `canonical`, `og:url`, `sitemap.xml` et `robots.txt` une
-  fois le domaine définitif connu.
+- **Domaines** : le site est sur `www.vynl.ch` (`vynl.ch` redirige vers `www`),
+  l'app d'écoute sur `app.vynl.ch`, le Studio sur `creator.vynl.ch`. Ces adresses
+  vivent dans `js/config.js` ; le `href` écrit dans le HTML est le repli sans JS et
+  doit rester identique. L'API reste sur `music-app-api-9cjg.onrender.com` (pas de
+  `api.vynl.ch`).
+- **À ajouter plus tard** : image de partage Open Graph, `canonical`, `og:url`,
+  `sitemap.xml` et `robots.txt` (le domaine est connu : `https://www.vynl.ch`).
 
 ## Pages légales (brouillons)
 
@@ -144,4 +148,4 @@ review » est affiché en haut de chaque page.
   sont sur toutes les pages. Les futures URLs `PRIVACY_POLICY_URL` et `TERMS_URL`
   de l'app auditeur sont `/privacy` et `/terms`.
 - Le Studio affiche encore un texte provisoire pour les Creator Terms : il doit
-  pointer vers `/creator-terms` une fois le domaine connu.
+  pointer vers `https://www.vynl.ch/creator-terms`.
