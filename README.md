@@ -126,8 +126,8 @@ Seul dégradé sur du texte : l'accent des titres de hero.
 - **Domaines** : le site est sur `www.vynl.ch` (`vynl.ch` redirige vers `www`),
   l'app d'écoute sur `app.vynl.ch`, le Studio sur `creator.vynl.ch`. Ces adresses
   vivent dans `js/config.js` ; le `href` écrit dans le HTML est le repli sans JS et
-  doit rester identique. L'API reste sur `music-app-api-9cjg.onrender.com` (pas de
-  `api.vynl.ch`).
+  doit rester identique. L'API est sur `api.vynl.ch` (domaine personnalisé du service
+  Render ; l'ancienne adresse `music-app-api-9cjg.onrender.com` répond toujours).
 - **À ajouter plus tard** : image de partage Open Graph, `canonical`, `og:url`,
   `sitemap.xml` et `robots.txt` (le domaine est connu : `https://www.vynl.ch`).
 

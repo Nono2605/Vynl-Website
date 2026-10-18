@@ -19,5 +19,5 @@ window.VYNL = {
   apiBase:
     window.location.hostname === "localhost"
       ? "http://localhost:4000"
-      : "https://music-app-api-9cjg.onrender.com",
+      : "https://api.vynl.ch",
 };
