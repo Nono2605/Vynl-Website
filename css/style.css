@@ -2456,6 +2456,10 @@ ol {
 p.dev-note {
   max-width: none;
   margin-top: 0.75rem;
+  /* Retrait suspendu : l'anneau (16 px avec sa marge) sort à gauche, et les lignes
+     suivantes s'alignent sur le texte, pas sur l'anneau. */
+  padding-left: 1rem;
+  text-indent: -1rem;
   color: var(--vynl-texte-2);
   font-size: 0.8125rem;
   line-height: 1.4;

@@ -12,7 +12,7 @@ le Creator Studio, et affiche le catalogue réel via l'API publique.
 | `index.html` | Accueil : hero (disque géant), bande défilante, pourquoi Vynl (défilement horizontal épinglé), les 2 étiquettes, catalogue réel, studio (pile de cartes), appel final |
 | `creators.html` | Creator Studio : bento incliné des fonctionnalités (Live / Coming), frise verticale en 4 étapes, prérequis |
 | `transparency.html` | Étiquettes AI-assisted / AI-generated, royalties centrées sur l'utilisateur |
-| `roadmap.html` | Avancement de la beta : ce qui est en ligne et ce qui reste à construire (abonnements, royalties, versements, migration de la base). Les étapes sont écrites en dur dans le HTML (une `li` par étape, classe `road__item--live` pour « Live ») ; le compteur du hero est un attribut `--v` (pourcentage) et un texte à mettre à jour à la main |
+| `roadmap.html` | Avancement de la beta : ce qui est en ligne et ce qui reste à construire (musique AI-assisted, abonnements, publicité, royalties, versements, textes légaux, migration de la base) et, en tête, les quatre règles de la bêta. Les étapes sont écrites en dur dans le HTML (une `li` par étape, classe `road__item--live` pour « Live ») ; le compteur du hero est un attribut `--v` (pourcentage) et un texte à mettre à jour à la main |
 | `privacy.html`, `terms.html`, `creator-terms.html`, `legal-notice.html` | **Brouillons juridiques**, à relire avec un juriste (voir « Pages légales » plus bas) |
 | `404.html` | Page introuvable (chemins absolus : elle est servie à l'adresse demandée) |
 
@@ -119,10 +119,14 @@ Seul dégradé sur du texte : l'accent des titres de hero.
   visiteur a activé `prefers-reduced-motion`.
 - **Thème** : sombre uniquement, comme dans la DA (le mode clair n'est pas prévu
   pour le site).
-- **Mention « en développement »** : sous une promesse pas encore en ligne
-  (paiements, abonnements, stats d'écoute), un petit
-  `<p class="dev-note">… <a href="roadmap.html">See the roadmap</a></p>` (anneau
-  gris comme les étapes « Coming » de la roadmap). À retirer quand la fonction sort.
+- **La roadmap reflète le code** : une étape est « Live » seulement si la
+  fonction marche dans l'API, le Studio ou l'app d'écoute (à vérifier dans leur
+  code, pas de mémoire). Tout ce que la vitrine promet sans que ce soit en ligne
+  doit avoir une étape « Coming » et une mention discrète sous la promesse :
+  `<p class="dev-note">… <a href="roadmap.html#next">See the roadmap</a></p>` (anneau
+  gris comme les étapes « Coming »). À retirer, avec l'étape passée en « Live »,
+  quand la fonction sort. Pendant la bêta : seule la musique déclarée AI-generated
+  est acceptée (règle de l'API et de l'admin, `provenance.ts`).
 - **Domaines** : le site est sur `www.vynl.ch` (`vynl.ch` redirige vers `www`),
   l'app d'écoute sur `app.vynl.ch`, le Studio sur `creator.vynl.ch`. Ces adresses
   vivent dans `js/config.js` ; le `href` écrit dans le HTML est le repli sans JS et
